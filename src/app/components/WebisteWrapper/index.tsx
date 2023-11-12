@@ -49,7 +49,7 @@ const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
           <TitleSection />
           <ToolboxSection />
           <ExperienceSection />
-          <ShowcaseSection />
+          <ShowcaseSection isMobile={isMobile} />
           <ContactSection />
           <FooterSection isMobile={isMobile} />
         </div>
