@@ -1,0 +1,73 @@
+#toolbox-section .section-body {
+  flex-direction: row;
+  justify-content: center;
+  column-gap: 20px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+}
+
+.skill-wrapper {
+  width: 100%;
+  max-width: 100rem;
+  display: flex;
+  flex-direction: row;
+  row-gap: 2rem;
+  flex-wrap: wrap;
+  column-gap: 2rem;
+  justify-content: center;
+}
+.skill-category-wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  flex-grow: 1;
+  flex-basis: 0;
+  border: 2px dashed #933f99;
+  padding: 2rem;
+  border-radius: 15px;
+}
+.skill-list {
+  display: flex;
+  flex-direction: row;
+  column-gap: 15px;
+  flex-wrap: wrap;
+}
+
+.skill-category {
+  font-size: 1.6rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  color: #e88c5d;
+  border-bottom: 1px solid #933f99;
+  padding: 5px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.skill-cell {
+  min-width: 280px;
+  padding: 0.5rem 2rem;
+  border-radius: 10px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  text-align: center;
+}
+.skill-block:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.skill-block > div:not(.skill-category) {
+  padding-left: 20px;
+  font-size: 1rem;
+  line-height: 2rem;
+}
+
+@media only screen and (max-width: 600px) {
+  #toolbox-section .section-body {
+    padding: 20px;
+  }
+  .skill-category-wrapper {
+    padding: 1rem;
+  }
+}

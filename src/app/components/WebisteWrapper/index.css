@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;400;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap");
+
+.pages-wrapper {
+  position: absolute;
+  display: flex-container;
+  flex-direction: column;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  background-color: #382461;
+}
+.pages {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid #00ff00; */
+  min-height: 300px;
+}
+.page-title {
+  font-family: "Montserrat";
+  font-weight: 400;
+  font-size: 5rem;
+  /* color: #f2af29; */
+  text-transform: capitalize;
+  margin: 2% 5%;
+  color: #fff;
+  -webkit-animation: breathe_yellow 1.5s ease-in-out infinite alternate;
+  -moz-animation: breathe_yellow 1.5s ease-in-out infinite alternate;
+  animation: breathe_yellow 1.5s ease-in-out infinite alternate;
+}
+
+.section-body {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+#bg-particles {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  /* background-color: #f00; */
+}
+#content {
+  position: relative;
+  z-index: 5;
+}
