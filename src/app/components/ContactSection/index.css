@@ -296,12 +296,19 @@
 @media only screen and (max-width: 600px) {
   .social-block {
     width: 5.5rem;
-    font-size: 4rem;
+    font-size: 3rem;
+    border-radius: 100%;
+    background-color: rgba(250, 219, 173, 1);
   }
   .social-block:hover {
     font-size: 3.5rem;
   }
   .social-block:hover .social-title {
     font-size: 0.8rem;
+  }
+
+  .btn-overlay {
+    background-color: rgba(250, 219, 173, 1);
+    font-weight: 600;
   }
 }

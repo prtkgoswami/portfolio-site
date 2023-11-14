@@ -23,9 +23,5 @@ export default function Home() {
     };
   }, []);
 
-  return (
-    <main className={styles.main}>
-      <WebsiteWrapper isMobile={isMobile} />
-    </main>
-  );
+  return <WebsiteWrapper isMobile={isMobile} />;
 }
