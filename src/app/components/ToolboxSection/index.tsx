@@ -10,42 +10,40 @@ const ToolboxSection = ({}: ToolboxSectionProps): React.ReactElement => {
   const [skillsList, setSkillsList] = useState<Skill[][]>([]);
 
   const updateSkillLayout = () => {
-    const windowWidth = window.innerWidth;
-    const usableWidth =
-      windowWidth < 600
-        ? bodyRef.current.offsetWidth - 60
-        : bodyRef.current.offsetWidth - 96;
-    // const usableWidth = bodyRef.current.offsetWidth - 60;
-    const maxElems =
-      windowWidth < 600
-        ? Math.floor(usableWidth / 80)
-        : Math.floor(usableWidth / 180);
-    // const maxElems = Math.floor(usableWidth / 80);
-    const skills: Skill[][] = [];
-    let temp: Skill[] = [];
-    let count = 0;
+    if (bodyRef.current) {
+      const windowWidth = window.innerWidth;
+      const usableWidth =
+        windowWidth < 600
+          ? (bodyRef.current as HTMLElement).offsetWidth - 60
+          : (bodyRef.current as HTMLElement).offsetWidth - 96;
+      const maxElems =
+        windowWidth < 600
+          ? Math.floor(usableWidth / 80)
+          : Math.floor(usableWidth / 180);
+      const skills: Skill[][] = [];
+      let temp: Skill[] = [];
+      let count = 0;
 
-    SKILL_LIST.forEach((skill, index) => {
-      temp.push(skill);
-      count += 1;
-      if (
-        (skills.length % 2 === 0 && count === maxElems - 1) ||
-        (skills.length % 2 === 1 && count === maxElems)
-      ) {
-        skills.push(temp);
-        temp = [];
-        count = 0;
-      }
-    });
-    skills.push(temp);
+      SKILL_LIST.forEach((skill, index) => {
+        temp.push(skill);
+        count += 1;
+        if (
+          (skills.length % 2 === 0 && count === maxElems - 1) ||
+          (skills.length % 2 === 1 && count === maxElems)
+        ) {
+          skills.push(temp);
+          temp = [];
+          count = 0;
+        }
+      });
+      skills.push(temp);
 
-    setSkillsList(skills);
+      setSkillsList(skills);
+    }
   };
 
   useEffect(() => {
-    if (bodyRef.current) {
-      updateSkillLayout();
-    }
+    updateSkillLayout();
   }, [bodyRef.current]);
 
   useEffect(() => {
