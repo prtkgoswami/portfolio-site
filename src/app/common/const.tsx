@@ -49,32 +49,109 @@ export const SOCIAL_LINKS = [
   },
 ];
 
-export const SKILL_LIST = {
-  web: [
-    "HTML & CSS",
-    "JavaScript",
-    "TypeScript",
-    "React.js",
-    "Next.js",
-    "Node.js",
-    "Django",
-    "MySQL",
-  ],
-  programming: ["C++", "Python", "C#"],
-  misc: [
-    "Visual Studio",
-    "Visual Studio Code",
-    "Adobe Photoshop",
-    "Figma",
-    "Jenkins",
-    "Trello",
-    "Jira",
-    "Postman",
-    "Git",
-    "Windows",
-    "Linux",
-  ],
+export type Skill = {
+  name: string;
+  icon: string;
 };
+
+export const SKILL_LIST: Skill[] = [
+  { name: "HTML", icon: "/skill_logo_html.svg" },
+  { name: "CSS", icon: "/skill_logo_css.svg" },
+  { name: "JavaScript", icon: "/skill_logo_javascript.svg" },
+  { name: "TypeScript", icon: "/skill_logo_typescript.svg" },
+  { name: "React.js", icon: "/skill_logo_reactjs.svg" },
+  { name: "Next.js", icon: "/skill_logo_nextjs.svg" },
+  { name: "Node.js", icon: "/skill_logo_nodejs.svg" },
+  { name: "Django", icon: "/skill_logo_django.svg" },
+  { name: "MySQL", icon: "/skill_logo_mysql.svg" },
+  { name: "C++", icon: "/skill_logo_cpp.svg" },
+  { name: "Python", icon: "/skill_logo_python.svg" },
+  { name: "C#", icon: "/skill_logo_csharp.svg" },
+  { name: "Visual Studio", icon: "/skill_logo_vs.svg" },
+  { name: "Visual Studio Code", icon: "/skill_logo_vsc.svg" },
+  { name: "Adobe Photoshop", icon: "/skill_logo_photoshop.svg" },
+  { name: "Figma", icon: "/skill_logo_figma.svg" },
+  { name: "Trello", icon: "/skill_logo_trello.svg" },
+  { name: "Jira", icon: "/skill_logo_jira.svg" },
+  { name: "Postman", icon: "/skill_logo_postman.svg" },
+  { name: "Git", icon: "/skill_logo_git.svg" },
+  { name: "Windows", icon: "/skill_logo_windows.svg" },
+  { name: "Linux", icon: "/skill_logo_linux.svg" },
+];
+
+export type Experience = {
+  orgName: string;
+  startYear: string;
+  endYear: string;
+  role: string;
+  responsibilities: string[];
+  achievements: string[];
+  imgSrc: string;
+  bannerColor: string;
+};
+
+export const EXPERIENCE_LIST: Experience[] = [
+  {
+    orgName: "IBM",
+    startYear: "2016",
+    endYear: "2019",
+    role: "Application Developer",
+    responsibilities: [
+      "Developed & maintained over 15 integrations pertaining to SIM activation and customer reward functionality.",
+      "Spearheaded the development of a solution to Automate Builds and Deploy executables using Jenkins, Soap UI, Apache Ant Scripts & Bash Scripts to improve deployment time by approximately 30 minutes.",
+      "Oversaw the migration of over 30 integrations for Phase 1 of Production Server Version Upgrade.",
+    ],
+    achievements: [
+      "Led the successful migration of a legacy system to a new Server Version, resulting in improved performance and maintainability.",
+      "Received recognition from other teams for my Automation Solution to Build and Deploy deliverables",
+      "Implemented automated build and deployment pipeline, reducing the deployment time by 30 mins",
+    ],
+    imgSrc: "/ibm_logo.svg",
+    bannerColor: "#000000",
+  },
+  {
+    orgName: "University of Washington Bothell",
+    startYear: "2019",
+    endYear: "2022",
+    role: "Masters Student",
+    responsibilities: [
+      "Developed and maintained scalable web applications using modern technologies such as React and Node.js.",
+      "Collaborated with cross-functional teams to deliver high-quality software solutions within tight deadlines.",
+      "Participated in code reviews, providing constructive feedback and ensuring code quality standards.",
+      "Implemented new features and enhancements, contributing to a 20% increase in user engagement.",
+      "Troubleshooted and resolved software defects, improving overall system stability.",
+      "Mentored junior developers and facilitated knowledge sharing sessions within the team.",
+    ],
+    achievements: [
+      "Led the successful migration of a legacy system to a microservices architecture, resulting in improved performance and maintainability.",
+      "Received Employee of the Month award for outstanding contributions to a critical project.",
+      "Implemented automated testing processes, reducing the number of bugs by 30%.",
+    ],
+    imgSrc: "/uw_logo.png",
+    bannerColor: "#4b2d83",
+  },
+  {
+    orgName: "TikTok",
+    startYear: "2022",
+    endYear: "Present",
+    role: "Software Engineer",
+    responsibilities: [
+      "Developed and maintained scalable web applications using modern technologies such as React and Node.js.",
+      "Collaborated with cross-functional teams to deliver high-quality software solutions within tight deadlines.",
+      "Participated in code reviews, providing constructive feedback and ensuring code quality standards.",
+      "Implemented new features and enhancements, contributing to a 20% increase in user engagement.",
+      "Troubleshooted and resolved software defects, improving overall system stability.",
+      "Mentored junior developers and facilitated knowledge sharing sessions within the team.",
+    ],
+    achievements: [
+      "Led the successful migration of a legacy system to a microservices architecture, resulting in improved performance and maintainability.",
+      "Received Employee of the Month award for outstanding contributions to a critical project.",
+      "Implemented automated testing processes, reducing the number of bugs by 30%.",
+    ],
+    imgSrc: "/tiktok_logo.jpg",
+    bannerColor: "#ffffff",
+  },
+];
 
 export type Project = {
   name: string;
@@ -102,7 +179,7 @@ export const PROJECT_DETAILS: Project[] = [
     },
     fit: "object-fill",
     desc: "Description",
-    tech: ["Tech"],
+    tech: ["Next JS", "TypeScript", "Tailwind CSS", "Vercel"],
   },
   {
     name: "Netflix Clone",
@@ -112,7 +189,7 @@ export const PROJECT_DETAILS: Project[] = [
     imgSrc: { desktop: "/screenshot-netflix-clone-desktop.png", mobile: "" },
     fit: "object-fill",
     desc: "Description",
-    tech: ["Tech"],
+    tech: ["React JS", "JavaScript", "CSS", "Firebase"],
   },
   {
     name: "Senku Cola",
@@ -125,7 +202,7 @@ export const PROJECT_DETAILS: Project[] = [
     },
     fit: "object-fill",
     desc: "Description",
-    tech: ["Tech"],
+    tech: ["Next JS", "TypeScript", "Tailwind CSS", "Vercel"],
   },
   {
     name: "Pixel",
@@ -135,7 +212,7 @@ export const PROJECT_DETAILS: Project[] = [
     imgSrc: { desktop: "/screenshot-pixel-art-canvas-desktop.png", mobile: "" },
     fit: "object-fill",
     desc: "Description",
-    tech: ["Tech"],
+    tech: ["Next JS", "TypeScript", "Tailwind CSS", "Vercel"],
   },
   {
     name: "Roshambo",
@@ -148,7 +225,7 @@ export const PROJECT_DETAILS: Project[] = [
     },
     fit: "object-fill",
     desc: "Description",
-    tech: ["Tech"],
+    tech: ["Next JS", "TypeScript", "Tailwind CSS", "Vercel"],
   },
   {
     name: "Repository",
@@ -161,6 +238,6 @@ export const PROJECT_DETAILS: Project[] = [
     },
     fit: "object-fill",
     desc: "Description",
-    tech: ["Tech"],
+    tech: ["Next JS", "TypeScript", "Tailwind CSS", "Vercel"],
   },
 ];

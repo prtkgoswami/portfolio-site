@@ -1,3 +1,4 @@
+import { useWindowSize } from "@/app/common/hooks/useWindowResize";
 import React, { ReactElement, useEffect, useState } from "react";
 import ContactSection from "../ContactSection";
 import ExperienceSection from "../ExperienceSection";
@@ -14,24 +15,15 @@ type WebsiteWrapperProps = {
 };
 
 const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
-  // const [isMobileVisit, setIsMobileVisit] = useState(false);
-
   const updateDimensions = () => {
     const titlePage = document.querySelector("#title-section");
-    // pages.forEach((page) => {
-    //   page.style.minHeight = window.innerHeight + "px";
-    // });
+
     if (titlePage) {
       (titlePage as HTMLElement).style.minHeight = window.innerHeight + "px";
     }
   };
 
   useEffect(() => {
-    // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    // if (isMobile) {
-    //   setIsMobileVisit(true);
-    // }
-
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
     return () => {
@@ -51,8 +43,8 @@ const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
           <ExperienceSection />
           <ShowcaseSection isMobile={isMobile} />
           <ContactSection />
-          <FooterSection isMobile={isMobile} />
         </div>
+        <FooterSection isMobile={isMobile} />
       </div>
     </>
   );

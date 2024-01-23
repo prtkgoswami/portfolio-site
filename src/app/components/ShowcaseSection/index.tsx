@@ -12,6 +12,7 @@ const ShowcaseSection = ({
 
   return (
     <div id="showcase-section" className="pages">
+      <div className="page-title">Showcase</div>
       {isMobile ? (
         <div className="section-body">
           {/* <div
