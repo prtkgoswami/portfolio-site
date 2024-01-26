@@ -1,16 +1,15 @@
 import { PROJECT_DETAILS } from "@/app/common/const";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import "./index.css";
 
-type ShowcaseSectionProps = { isMobile: boolean };
+type ShowcaseSectionProps = { isMobile: boolean; refCallback: any };
 
 const ShowcaseSection = ({
   isMobile,
+  refCallback,
 }: ShowcaseSectionProps): React.ReactElement => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const pageRef = useRef(null);
-  const [isIntersecting, setIsIntersecting] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleNavClick = (index: number) => {
@@ -21,33 +20,8 @@ const ShowcaseSection = ({
     }, 1000);
   };
 
-  useEffect(() => {
-    if (pageRef.current) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setIsIntersecting(true);
-            if (pageRef.current) {
-              observer.unobserve(pageRef.current);
-            }
-          }
-        },
-        { rootMargin: "-300px" }
-      );
-      return () => {
-        if (pageRef.current) {
-          observer.observe(pageRef.current);
-        }
-      };
-    }
-  }, [pageRef.current]);
-
   return (
-    <div
-      id="showcase-section"
-      className={`pages ${isIntersecting && "fadeInLeft"}`}
-      ref={pageRef}
-    >
+    <div id="showcase-section" className="pages" ref={refCallback}>
       <div className="page-title">Showcase</div>
       {isMobile ? (
         <div className="section-body">

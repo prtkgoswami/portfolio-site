@@ -1,22 +1,16 @@
-import { EXPERIENCE_LIST, Experience } from "@/app/common/const";
-import {
-  faCaretDown,
-  faCaretUp,
-  faMinus,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { EXPERIENCE_LIST } from "@/app/common/const";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import "./index.css";
 
-type ExperienceSectionProps = {};
+type ExperienceSectionProps = {
+  refCallback: any;
+};
 
-const ExperienceSection = ({}: ExperienceSectionProps): React.ReactElement => {
+const ExperienceSection = ({
+  refCallback,
+}: ExperienceSectionProps): React.ReactElement => {
   const [expandedIndex, setExpandedIndex] = useState(-1);
-  const currentYear = new Date().getFullYear();
-  const pageRef = useRef(null);
-  const [isIntersecting, setIsIntersecting] = useState(false);
 
   const handleExpClick = (index: number) => {
     const isExpanded = index === expandedIndex;
@@ -28,33 +22,8 @@ const ExperienceSection = ({}: ExperienceSectionProps): React.ReactElement => {
     }
   };
 
-  useEffect(() => {
-    if (pageRef.current) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setIsIntersecting(true);
-            if (pageRef.current) {
-              observer.unobserve(pageRef.current);
-            }
-          }
-        },
-        { rootMargin: "-300px" }
-      );
-      return () => {
-        if (pageRef.current) {
-          observer.observe(pageRef.current);
-        }
-      };
-    }
-  }, [pageRef.current]);
-
   return (
-    <div
-      id="experience-section"
-      className={`pages ${isIntersecting && "fadeInRight"}`}
-      ref={pageRef}
-    >
+    <div id="experience-section" className="pages" ref={refCallback}>
       <div className="page-title">Experience</div>
       <div className="section-body">
         {EXPERIENCE_LIST.map((experience, expIndex) => (
@@ -92,11 +61,6 @@ const ExperienceSection = ({}: ExperienceSectionProps): React.ReactElement => {
                 </div>
               </div>
               <div className="exp-banner-expand-btn">
-                {/* <FontAwesomeIcon
-                  icon={expandedIndex === expIndex ? faMinus : faPlus}
-                  size="2xl"
-                  className="exp-banner-expand-icon"
-                /> */}
                 <div
                   className={`exp-banner-expand-icon ${
                     expandedIndex === expIndex ? "minus-icon" : "plus-icon"
@@ -109,7 +73,6 @@ const ExperienceSection = ({}: ExperienceSectionProps): React.ReactElement => {
               </div>
             </div>
 
-            {/* {expandedIndex === expIndex && ( */}
             <div
               className="exp-item-content"
               style={
@@ -135,7 +98,6 @@ const ExperienceSection = ({}: ExperienceSectionProps): React.ReactElement => {
                 </ul>
               </div>
             </div>
-            {/* )} */}
           </div>
         ))}
       </div>

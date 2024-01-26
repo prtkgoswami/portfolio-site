@@ -1,5 +1,4 @@
-import { useWindowSize } from "@/app/common/hooks/useWindowResize";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useCallback, useEffect, useRef } from "react";
 import ContactSection from "../ContactSection";
 import ExperienceSection from "../ExperienceSection";
 import FooterSection from "../FooterSection";
@@ -16,6 +15,8 @@ type WebsiteWrapperProps = {
 
 const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
   const contentRef = useRef(null);
+  const sectionsRef = useRef<any[]>([]);
+
   const updateDimensions = () => {
     const titlePage = document.querySelector("#title-section");
 
@@ -24,9 +25,37 @@ const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
     }
   };
 
+  const refCallback = useCallback((element: any) => {
+    if (element) {
+      sectionsRef.current.push(element);
+    }
+  }, []);
+
   useEffect(() => {
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
+
+    const observer = new IntersectionObserver((entries) => {
+      const sectionIds = sectionsRef.current.map((section: any) =>
+        section.getAttribute("id")
+      );
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.getAttribute("id");
+          const sectionIndex = sectionIds.indexOf(sectionId);
+
+          if (sectionIndex % 2 === 0) {
+            entry.target.classList.add("fadeInLeft");
+          } else {
+            entry.target.classList.add("fadeInRight");
+          }
+        }
+      });
+    });
+    sectionsRef.current.forEach((section) => {
+      observer.observe(section);
+    });
+
     return () => {
       window.removeEventListener("resize", updateDimensions);
     };
@@ -44,10 +73,10 @@ const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
         </div>
         <div id="content" ref={contentRef}>
           <TitleSection />
-          <ToolboxSection />
-          <ExperienceSection />
-          <ShowcaseSection isMobile={isMobile} />
-          <ContactSection />
+          <ToolboxSection refCallback={refCallback} />
+          <ExperienceSection refCallback={refCallback} />
+          <ShowcaseSection isMobile={isMobile} refCallback={refCallback} />
+          <ContactSection refCallback={refCallback} />
         </div>
         <FooterSection isMobile={isMobile} />
       </div>
