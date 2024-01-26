@@ -38,6 +38,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: bob 2.5s infinite ease-in-out alternate;
 }
 .hex-row:nth-child(odd) .hex-wrapper:nth-child(odd) .circle,
 .hex-row:nth-child(even) .hex-wrapper:nth-child(even) .circle {
@@ -88,5 +89,14 @@
   }
   .circle {
     height: 60px;
+  }
+}
+
+@keyframes bob {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: translateY(-10px);
   }
 }

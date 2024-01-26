@@ -1,5 +1,5 @@
 import { useWindowSize } from "@/app/common/hooks/useWindowResize";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import ContactSection from "../ContactSection";
 import ExperienceSection from "../ExperienceSection";
 import FooterSection from "../FooterSection";
@@ -15,6 +15,7 @@ type WebsiteWrapperProps = {
 };
 
 const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
+  const contentRef = useRef(null);
   const updateDimensions = () => {
     const titlePage = document.querySelector("#title-section");
 
@@ -31,13 +32,17 @@ const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
     };
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <div className="pages-wrapper">
         <div id="bg-particles">
           <BGParticles />
         </div>
-        <div id="content">
+        <div id="content" ref={contentRef}>
           <TitleSection />
           <ToolboxSection />
           <ExperienceSection />

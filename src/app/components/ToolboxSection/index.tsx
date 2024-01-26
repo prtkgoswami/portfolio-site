@@ -6,8 +6,10 @@ import "./index.css";
 type ToolboxSectionProps = {};
 
 const ToolboxSection = ({}: ToolboxSectionProps): React.ReactElement => {
+  const pageRef = useRef(null);
   const bodyRef = useRef(null);
   const [skillsList, setSkillsList] = useState<Skill[][]>([]);
+  const [isIntersecting, setIsIntersecting] = useState(false);
 
   const updateSkillLayout = () => {
     if (bodyRef.current) {
@@ -47,6 +49,27 @@ const ToolboxSection = ({}: ToolboxSectionProps): React.ReactElement => {
   }, [bodyRef.current]);
 
   useEffect(() => {
+    if (pageRef.current) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsIntersecting(true);
+            if (pageRef.current) {
+              observer.unobserve(pageRef.current);
+            }
+          }
+        },
+        { rootMargin: "-300px" }
+      );
+      return () => {
+        if (pageRef.current) {
+          observer.observe(pageRef.current);
+        }
+      };
+    }
+  }, [pageRef.current]);
+
+  useEffect(() => {
     window.addEventListener("resize", updateSkillLayout);
     return () => {
       window.removeEventListener("resize", updateSkillLayout);
@@ -54,14 +77,21 @@ const ToolboxSection = ({}: ToolboxSectionProps): React.ReactElement => {
   }, []);
 
   return (
-    <div id="toolbox-section" className="pages">
+    <div
+      id="toolbox-section"
+      className={`pages ${isIntersecting && "fadeInLeft"}`}
+      ref={pageRef}
+    >
       <div className="page-title">What I Know...</div>
       <div className="section-body" ref={bodyRef}>
         {skillsList.map((skillRow, skillRowIdx) => (
           <div className="hex-row" key={`skill-row-${skillRowIdx}`}>
             {skillRow.map(({ name, icon }, skillIdx) => (
               <div className="hex-wrapper" key={`skill-${skillIdx}`}>
-                <div className="circle">
+                <div
+                  className="circle"
+                  style={{ animationDelay: `${Math.random() * 3}s` }}
+                >
                   <div className="circle-icon-wrapper">
                     <Image
                       src={icon}

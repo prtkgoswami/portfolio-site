@@ -22,7 +22,7 @@
 }
 .project-nav-item:hover {
   color: #e88c5d;
-  transform: scale(1.2);
+  /* transform: scale(1.2); */
 }
 .project-nav-item-hidden {
   display: none;
@@ -59,6 +59,9 @@
   height: calc(23rem * 1.1);
   background-color: #222;
 }
+.preview-overlay > * {
+  transition: opacity 0.5s ease-in-out;
+}
 
 .project-details {
   padding: 1rem;
@@ -77,6 +80,11 @@
 }
 .project-details-title {
   color: #fadbac;
+}
+.project-details-desc {
+  color: var(--white);
+  line-height: 1.8;
+  margin-bottom: 1rem;
 }
 .project-details-tech {
   font-size: 1rem;

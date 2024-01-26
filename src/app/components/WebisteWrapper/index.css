@@ -2,6 +2,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&family=Roboto&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap");
 
+:root {
+  --purple: #382461;
+  --yellow: #f2af29;
+  --orange: #e88c5d;
+  --light-yellow: #fadbac;
+  --white: #ffffff;
+}
+
 .pages-wrapper {
   position: absolute;
   display: flex-container;
@@ -23,6 +31,18 @@
   min-height: 300px;
   align-items: center;
 }
+.pages:not(#title-section) {
+  opacity: 0;
+}
+.fadeInLeft {
+  animation: fadeInFromLeft 1s ease-out;
+  opacity: 1 !important;
+}
+.fadeInRight {
+  animation: fadeInFromRight 1s ease-out;
+  opacity: 1 !important;
+}
+
 .page-title {
   font-family: "Montserrat";
   font-weight: 400;
@@ -61,11 +81,36 @@
   row-gap: 6rem;
 }
 
+@keyframes fadeInFromLeft {
+  from {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+@keyframes fadeInFromRight {
+  from {
+    transform: translateX(200px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   #content {
     row-gap: 2rem;
   }
   .page-title {
     font-size: 2.6rem;
+  }
+
+  .pages:not(#title-section) {
+    opacity: 1;
   }
 }

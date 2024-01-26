@@ -1,6 +1,6 @@
 import { PROJECT_DETAILS } from "@/app/common/const";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./index.css";
 
 type ShowcaseSectionProps = { isMobile: boolean };
@@ -9,29 +9,48 @@ const ShowcaseSection = ({
   isMobile,
 }: ShowcaseSectionProps): React.ReactElement => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const pageRef = useRef(null);
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const handleNavClick = (index: number) => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setSelectedIndex(index);
+      setIsTransitioning(false);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (pageRef.current) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsIntersecting(true);
+            if (pageRef.current) {
+              observer.unobserve(pageRef.current);
+            }
+          }
+        },
+        { rootMargin: "-300px" }
+      );
+      return () => {
+        if (pageRef.current) {
+          observer.observe(pageRef.current);
+        }
+      };
+    }
+  }, [pageRef.current]);
 
   return (
-    <div id="showcase-section" className="pages">
+    <div
+      id="showcase-section"
+      className={`pages ${isIntersecting && "fadeInLeft"}`}
+      ref={pageRef}
+    >
       <div className="page-title">Showcase</div>
       {isMobile ? (
         <div className="section-body">
-          {/* <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              fontSize: isMobile ? "1.5rem" : "3rem",
-              color: "rgba(255,255,255, 0.4)",
-              height: "300px",
-              textTransform: "uppercase",
-              wordBreak: "break-word",
-              textAlign: "center",
-            }}
-          >
-            <h1>Showcase Section</h1>
-          </div> */}
-
           <div className="project-preview">
             <Image src="/phoneOverlay.png" alt="Phone Overlay" fill />
             <div className="preview-overlay">
@@ -39,6 +58,7 @@ const ShowcaseSection = ({
                 src={PROJECT_DETAILS[selectedIndex].imgSrc.mobile ?? ""}
                 alt="Project Preview"
                 fill
+                style={isTransitioning ? { opacity: 0 } : { opacity: 1 }}
               />
             </div>
           </div>
@@ -51,8 +71,12 @@ const ShowcaseSection = ({
                   projectDetails.imgSrc.mobile.length === 0
                     ? "project-nav-item-hidden"
                     : ""
+                } ${
+                  projectIndex === selectedIndex
+                    ? "project-nav-item-active"
+                    : ""
                 }`}
-                onClick={() => setSelectedIndex(projectIndex)}
+                onClick={() => handleNavClick(projectIndex)}
               >
                 {projectDetails.name}
               </div>
@@ -70,7 +94,7 @@ const ShowcaseSection = ({
                     ? "project-nav-item-active"
                     : ""
                 }`}
-                onClick={() => setSelectedIndex(projectIndex)}
+                onClick={() => handleNavClick(projectIndex)}
               >
                 {projectDetails.name}
               </div>
@@ -85,6 +109,7 @@ const ShowcaseSection = ({
                     src={PROJECT_DETAILS[selectedIndex].imgSrc.desktop ?? ""}
                     alt="Project Preview"
                     fill
+                    style={isTransitioning ? { opacity: 0 } : { opacity: 1 }}
                   />
                 </div>
               </div>

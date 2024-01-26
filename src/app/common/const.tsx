@@ -178,7 +178,7 @@ export const PROJECT_DETAILS: Project[] = [
       mobile: "/screenshot-tesla-clone-mobile.png",
     },
     fit: "object-fill",
-    desc: "Description",
+    desc: "Explore a meticulously crafted replica of Tesla's sleek and modern website, brought to life using cutting-edge technologies. This project showcases my expertise in frontend development, utilizing NextJS for a seamless and performant user experience, TypeScript for enhanced code quality and maintainability, and Tailwind CSS for a responsive and visually stunning design.",
     tech: ["Next JS", "TypeScript", "Tailwind CSS", "Vercel"],
   },
   {
@@ -188,7 +188,7 @@ export const PROJECT_DETAILS: Project[] = [
     sourceUrl: "https://github.com/prtkgoswami/react-nextflix-clone",
     imgSrc: { desktop: "/screenshot-netflix-clone-desktop.png", mobile: "" },
     fit: "object-fill",
-    desc: "Description",
+    desc: "Step into the world of entertainment with my Netflix Landing Page Clone, a captivating recreation of the popular streaming platform's homepage. This project showcases my proficiency in frontend development, employing ReactJS for a dynamic and interactive user interface, JavaScript for functionality, and CSS for a polished and responsive design.",
     tech: ["React JS", "JavaScript", "CSS", "Firebase"],
   },
   {
@@ -201,7 +201,7 @@ export const PROJECT_DETAILS: Project[] = [
       mobile: "/screenshot-senku-cola-mobile.png",
     },
     fit: "object-fill",
-    desc: "Description",
+    desc: "Embark on a journey into the world of anime with my Cola Product Page, inspired by the iconic beverage featured in Doctor Stone. This project represents a fusion of my passion for anime, frontend development expertise, and creative design. Crafted with NextJS, TypeScript, and Tailwind CSS, the product page offers a visually immersive and technically sophisticated experience.",
     tech: ["Next JS", "TypeScript", "Tailwind CSS", "Vercel"],
   },
   {
@@ -211,7 +211,7 @@ export const PROJECT_DETAILS: Project[] = [
     sourceUrl: "https://github.com/prtkgoswami/pixel-art-canvas",
     imgSrc: { desktop: "/screenshot-pixel-art-canvas-desktop.png", mobile: "" },
     fit: "object-fill",
-    desc: "Description",
+    desc: "Unleash your creativity with the Pixel Art Canvas, a dynamic web application designed to empower users to create mesmerizing pixel artworks. Developed using NextJS, TypeScript, and Tailwind CSS, this project combines cutting-edge technology with a user-friendly interface to provide a unique and immersive canvas for digital artistry.",
     tech: ["Next JS", "TypeScript", "Tailwind CSS", "Vercel"],
   },
   {
@@ -224,7 +224,7 @@ export const PROJECT_DETAILS: Project[] = [
       mobile: "/screenshot-roshambo-mobile.png",
     },
     fit: "object-fill",
-    desc: "Description",
+    desc: "Experience the classic game of Rock, Paper, Scissors like never before with my web app that adds a touch of geeky fun inspired by The Big Bang Theory. Developed using NextJS, TypeScript, and Tailwind CSS, this project invites users to engage in a playful battle of wits, with a hidden surprise inspired by the beloved sitcom.",
     tech: ["Next JS", "TypeScript", "Tailwind CSS", "Vercel"],
   },
   {
@@ -237,7 +237,7 @@ export const PROJECT_DETAILS: Project[] = [
       mobile: "/screenshot-prtk-repo-mobile.png",
     },
     fit: "object-fill",
-    desc: "Description",
+    desc: "Explore a curated collection of my diverse projects gathered in one centralized hub - the Project Showcase. This web repository, built using Next JS, TypeScript, and Tailwind CSS, serves as a comprehensive gallery, providing an in-depth look at my varied works and achievements.",
     tech: ["Next JS", "TypeScript", "Tailwind CSS", "Vercel"],
   },
 ];
