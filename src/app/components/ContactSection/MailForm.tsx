@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { sendEmail } from "./email";
 import "./index.css";
 
 type MailFormProps = {};
@@ -42,11 +41,9 @@ const MailForm = ({}: MailFormProps): ReactElement => {
     console.log("Sender Name:", senderName);
     console.log("Sender Email:", senderEmail);
     console.log("Message:", message);
-    // try {
-    //   sendEmail({ senderName, senderEmail, message });
-    // } catch (err) {
-    //   console.log("couldnt send email");
-    // }
+
+    // Send Email
+
     setFormData({
       senderName: "",
       senderEmail: "",

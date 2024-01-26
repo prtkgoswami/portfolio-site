@@ -42,7 +42,11 @@ const TitleSection = ({}: TitleSectionProps): React.ReactElement => {
               cutting-edge web applications. If you find something that
               resonates with you, let&apos;s connect and discuss it further. For
               a more detailed overview of my skills and experience, feel free to
-              check out my <a href="#">resume</a>.
+              check out my{" "}
+              <a href="/Pratik-Goswami-Resume.pdf" target="_blank">
+                resume
+              </a>
+              .
               <br />
               <br />
               Thank you for visiting, and I look forward to the opportunity of
