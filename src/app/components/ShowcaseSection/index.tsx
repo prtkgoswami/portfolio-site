@@ -3,7 +3,11 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import "./index.css";
 
-type ShowcaseSectionProps = { isMobile: boolean; refCallback: any };
+type ShowcaseSectionProps = {
+  isMobile: boolean;
+  refCallback: any;
+  isLoopEnabled?: boolean;
+};
 
 type ProjectList = {
   desktop: Project[];
@@ -13,17 +17,19 @@ type ProjectList = {
 const ShowcaseSection = ({
   isMobile,
   refCallback,
+  isLoopEnabled = true,
 }: ShowcaseSectionProps): React.ReactElement => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const timerIndicatorRef = useRef<HTMLDivElement>(null);
   const [timeLeft, setTimeLeft] = useState(5);
-  const [projectList, setProjectList] = useState<ProjectList>({
+  const projectList: ProjectList = {
     desktop: PROJECT_DETAILS,
     mobile: PROJECT_DETAILS.filter(
       (project) => project.imgSrc.mobile.length !== 0
     ),
-  });
+  };
+  const [isLooping, setIsLooping] = useState(isLoopEnabled);
 
   const handleNavClick = (index: number) => {
     setIsTransitioning(true);
@@ -32,31 +38,36 @@ const ShowcaseSection = ({
     }, 500);
     setTimeout(() => {
       setIsTransitioning(false);
-      if (timerIndicatorRef.current)
-        timerIndicatorRef.current.style.visibility = "visible";
-      setTimeLeft(5);
+      if (isLooping) {
+        setTimeLeft(5);
+        if (timerIndicatorRef.current) {
+          timerIndicatorRef.current.style.visibility = "visible";
+        }
+      }
     }, 1000);
   };
 
   useEffect(() => {
-    const timerRef = setInterval(() => {
-      if (timeLeft > 0) {
-        setTimeLeft(timeLeft - 0.01);
-      }
-    }, 10);
+    if (isLoopEnabled) {
+      const timerRef = setInterval(() => {
+        if (timeLeft > 0 && isLooping) {
+          setTimeLeft(timeLeft - 0.01);
+        }
+      }, 10);
 
-    if (timeLeft <= 0) {
-      const projectNum = isMobile
-        ? projectList.mobile.length
-        : projectList.desktop.length;
+      if (timeLeft <= 0) {
+        const projectNum = isMobile
+          ? projectList.mobile.length
+          : projectList.desktop.length;
 
-      if (timerIndicatorRef.current) {
-        timerIndicatorRef.current.style.visibility = "hidden";
+        if (timerIndicatorRef.current) {
+          timerIndicatorRef.current.style.visibility = "hidden";
+        }
+        handleNavClick((selectedIndex + 1) % projectNum);
       }
-      handleNavClick((selectedIndex + 1) % projectNum);
+
+      return () => clearInterval(timerRef);
     }
-
-    return () => clearInterval(timerRef);
   }, [timeLeft]);
 
   return (
@@ -64,7 +75,6 @@ const ShowcaseSection = ({
       <div className="page-title">Showcase</div>
       {isMobile ? (
         <div className="section-body">
-          {/* <a href={projectList.mobile[selectedIndex].liveUrl} target="_blank"> */}
           <div className="project-preview">
             <a href={projectList.mobile[selectedIndex].liveUrl} target="_blank">
               <Image src="/phoneOverlay.png" alt="Phone Overlay" fill />
@@ -73,16 +83,19 @@ const ShowcaseSection = ({
                   src={projectList.mobile[selectedIndex].imgSrc.mobile ?? ""}
                   alt="Project Preview"
                   fill
-                  style={isTransitioning ? { opacity: 0 } : { opacity: 1 }}
+                  style={{
+                    opacity: isTransitioning ? 0 : 1,
+                    objectFit: "fill",
+                  }}
                 />
               </div>
             </a>
           </div>
-          {/* </a> */}
 
           <div className="project-nav-wrapper">
             <div
               className="time-indicator"
+              ref={timerIndicatorRef}
               style={{ transform: `scaleY(${timeLeft / 5})` }}
             ></div>
             <div className="project-nav">
@@ -96,7 +109,10 @@ const ShowcaseSection = ({
                        : ""
                    }`}
                   onClick={() => {
-                    setTimeLeft(5);
+                    setIsLooping(false);
+                    if (timerIndicatorRef.current) {
+                      timerIndicatorRef.current.style.visibility = "hidden";
+                    }
                     handleNavClick(projectIndex);
                   }}
                 >
@@ -119,7 +135,10 @@ const ShowcaseSection = ({
                       : ""
                   }`}
                   onClick={() => {
-                    setTimeLeft(5);
+                    setIsLooping(false);
+                    if (timerIndicatorRef.current) {
+                      timerIndicatorRef.current.style.visibility = "hidden";
+                    }
                     handleNavClick(projectIndex);
                   }}
                 >
@@ -147,7 +166,10 @@ const ShowcaseSection = ({
                     }
                     alt="Project Preview"
                     fill
-                    style={isTransitioning ? { opacity: 0 } : { opacity: 1 }}
+                    style={{
+                      opacity: isTransitioning ? 0 : 1,
+                      objectFit: "fill",
+                    }}
                   />
                 </div>
               </div>

@@ -64,7 +64,8 @@
   aspect-ratio: 1.5;
   position: relative;
 }
-.project-preview img {
+.project-preview a > img,
+.project-preview > img {
   position: relative;
   z-index: 5;
   object-fit: cover;
