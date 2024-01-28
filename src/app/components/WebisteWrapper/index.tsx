@@ -1,4 +1,10 @@
-import React, { ReactElement, useCallback, useEffect, useRef } from "react";
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import ContactSection from "../ContactSection";
 import ExperienceSection from "../ExperienceSection";
 import FooterSection from "../FooterSection";
@@ -16,6 +22,7 @@ type WebsiteWrapperProps = {
 const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
   const contentRef = useRef(null);
   const sectionsRef = useRef<any[]>([]);
+  const [titleIntersectionRatio, setTitleIntersectionRatio] = useState(1);
 
   const updateDimensions = () => {
     const titlePage = document.querySelector("#title-section");
@@ -35,23 +42,31 @@ const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
 
-    const observer = new IntersectionObserver((entries) => {
-      const sectionIds = sectionsRef.current.map((section: any) =>
-        section.getAttribute("id")
-      );
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const sectionId = entry.target.getAttribute("id");
-          const sectionIndex = sectionIds.indexOf(sectionId);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const sectionIds = sectionsRef.current.map((section: any) =>
+          section.getAttribute("id")
+        );
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.getAttribute("id");
+            const sectionIndex = sectionIds.indexOf(sectionId);
 
-          if (sectionIndex % 2 === 0) {
-            entry.target.classList.add("fadeInLeft");
-          } else {
-            entry.target.classList.add("fadeInRight");
+            if (sectionId !== "title-section") {
+              if (sectionIndex % 2 === 0) {
+                entry.target.classList.add("fadeInLeft");
+              } else {
+                entry.target.classList.add("fadeInRight");
+              }
+            } else {
+              setTitleIntersectionRatio(entry.intersectionRatio);
+            }
           }
-        }
-      });
-    });
+        });
+      },
+      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] }
+      // { threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
     sectionsRef.current.forEach((section) => {
       observer.observe(section);
     });
@@ -72,7 +87,10 @@ const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
           <BGParticles />
         </div>
         <div id="content" ref={contentRef}>
-          <TitleSection />
+          <TitleSection
+            refCallback={refCallback}
+            intersectionRatio={titleIntersectionRatio}
+          />
           <ToolboxSection refCallback={refCallback} />
           <ExperienceSection refCallback={refCallback} />
           <ShowcaseSection isMobile={isMobile} refCallback={refCallback} />

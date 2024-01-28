@@ -1,3 +1,6 @@
+#title-section {
+  position: relative;
+}
 #title-section .section-body {
   /* background-color: rgba(216, 106, 121, 0.6); */
   justify-content: center;
@@ -54,12 +57,14 @@
   line-height: 2.5rem;
   font-size: 1.3rem;
   color: #fadbac;
+  text-align: justify;
 }
 .desc a {
   text-transform: uppercase;
   border-bottom: 2px solid var(--light-yellow);
   padding-bottom: 5px;
   transition: color 0.5s ease, border-color 0.5s ease;
+  color: var(--yellow);
 }
 .desc a:hover {
   border-color: var(--orange);
@@ -67,14 +72,16 @@
 }
 
 .scroll-down-icon {
+  position: absolute;
+  bottom: 3rem;
   border: 3px solid var(--yellow);
+  opacity: 0.8;
   height: 80px;
   width: 50px;
   border-radius: 50px;
   padding: 10px;
   display: flex;
   justify-content: center;
-  margin-top: 5rem;
 }
 .scroll-indicator {
   height: 15px;
@@ -100,6 +107,10 @@
 }
 
 @media only screen and (max-width: 600px) {
+  #title-section .section-body {
+    padding: 2.5rem 1.5rem;
+    justify-content: flex-start;
+  }
   .wrapper {
     gap: 2rem;
   }
@@ -111,8 +122,8 @@
     text-align: center;
   }
   .desc {
-    line-height: 2rem;
-    font-size: 1rem;
+    line-height: 1.5rem;
+    font-size: 0.89rem;
     color: #fadbac;
   }
   .scroll-down-icon {

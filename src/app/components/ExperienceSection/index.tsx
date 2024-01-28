@@ -12,13 +12,14 @@ const ExperienceSection = ({
 }: ExperienceSectionProps): React.ReactElement => {
   const [expandedIndex, setExpandedIndex] = useState(-1);
 
-  const handleExpClick = (index: number) => {
+  const handleExpClick = (event: any, index: number) => {
     const isExpanded = index === expandedIndex;
 
     if (isExpanded) {
       setExpandedIndex(-1);
     } else {
       setExpandedIndex(index);
+      event.target.scrollIntoView();
     }
   };
 
@@ -30,8 +31,8 @@ const ExperienceSection = ({
           <div
             key={`exp-${expIndex}`}
             className="exp-block"
-            onClick={() => {
-              handleExpClick(expIndex);
+            onClick={(event) => {
+              handleExpClick(event, expIndex);
             }}
           >
             <div className="exp-banner">

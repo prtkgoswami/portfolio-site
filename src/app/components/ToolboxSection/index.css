@@ -19,7 +19,6 @@
 }
 
 .hex-wrapper {
-  cursor: pointer;
   transition: transform 0.2s ease-out;
   transform-origin: center;
 }
@@ -28,7 +27,7 @@
 }
 
 .circle {
-  background: rgba(146, 62, 152, 0.5);
+  background: rgba(200, 118, 224, 0.5);
   /* background-color: rgba(232, 140, 93, 0.5); */
   height: 160px;
   aspect-ratio: 1;
@@ -42,7 +41,7 @@
 }
 .hex-row:nth-child(odd) .hex-wrapper:nth-child(odd) .circle,
 .hex-row:nth-child(even) .hex-wrapper:nth-child(even) .circle {
-  background: rgba(176, 65, 184, 0.5);
+  /* background: rgba(176, 65, 184, 0.5); */
   background-color: rgba(232, 140, 93, 0.5);
 }
 .circle-icon-wrapper {

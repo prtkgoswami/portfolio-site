@@ -10,6 +10,9 @@
   --white: #ffffff;
 }
 
+body {
+  scroll-behavior: smooth;
+}
 .pages-wrapper {
   position: absolute;
   display: flex-container;

@@ -13,37 +13,37 @@ import { ReactElement } from "react";
 export const SOCIAL_LINKS = [
   {
     name: "Github",
-    url: "",
+    url: "https://github.com/prtkgoswami",
     icon: faGithub,
     background: "",
   },
   {
     name: "CodePen",
-    url: "",
+    url: "https://codepen.io/prtkgoswami",
     icon: faCodepen,
     background: "",
   },
   {
     name: "LinkedIn",
-    url: "",
+    url: "https://www.linkedin.com/in/prtkgoswami",
     icon: faLinkedinIn,
     background: "",
   },
   {
     name: "Instagram",
-    url: "",
+    url: "https://www.instagram.com/prtkgoswami8/",
     icon: faInstagram,
     background: "",
   },
   {
     name: "Facebook",
-    url: "",
+    url: "https://www.facebook.com/prtkgoswami",
     icon: faFacebook,
     background: "",
   },
   {
     name: "Itch IO",
-    url: "",
+    url: "https://prtkgoswami.itch.io/",
     icon: faItchIo,
     background: "",
   },

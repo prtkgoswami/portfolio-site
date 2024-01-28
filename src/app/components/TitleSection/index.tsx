@@ -1,11 +1,17 @@
 import Image from "next/image";
 import "./index.css";
 
-type TitleSectionProps = {};
+type TitleSectionProps = {
+  refCallback: any;
+  intersectionRatio: number;
+};
 
-const TitleSection = ({}: TitleSectionProps): React.ReactElement => {
+const TitleSection = ({
+  refCallback,
+  intersectionRatio,
+}: TitleSectionProps): React.ReactElement => {
   return (
-    <div id="title-section" className="pages">
+    <div id="title-section" className="pages" ref={refCallback}>
       <div className="section-body">
         <div className="wrapper">
           {/* <div className="profile-image-wrapper">
@@ -53,7 +59,13 @@ const TitleSection = ({}: TitleSectionProps): React.ReactElement => {
               collaborating with you!
             </div>
           </div>
-          <div className="scroll-down-icon">
+          <div
+            className="scroll-down-icon"
+            style={{
+              opacity:
+                intersectionRatio - 0.3 < 0 ? 0 : intersectionRatio - 0.3,
+            }}
+          >
             <div className="scroll-indicator"></div>
           </div>
         </div>
