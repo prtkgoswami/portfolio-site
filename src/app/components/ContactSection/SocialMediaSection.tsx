@@ -9,7 +9,12 @@ const SocialMediaSection =
     return (
       <div id="social-icon-container">
         {SOCIAL_LINKS.map((item, idx) => (
-          <a key={`social-${idx}`} href={item.url} target="_blank">
+          <a
+            key={`social-${idx}`}
+            href={item.url}
+            target="_blank"
+            aria-label={item.name}
+          >
             {/* <div className="social-title">{item.name}</div> */}
             <div className="social-block">
               <FontAwesomeIcon icon={item.icon} />

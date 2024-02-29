@@ -1,110 +1,133 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  ReactElement,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+"use client";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ReactElement, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import "./index.css";
 
-type MailFormProps = {};
-
-type FormData = {
-  senderName: string;
-  senderEmail: string;
+export type FormData = {
+  name: string;
+  email: string;
+  toEmail: string;
   message: string;
 };
 
-const MailForm = ({}: MailFormProps): ReactElement => {
-  const [formData, setFormData] = useState<FormData>({
-    senderName: "",
-    senderEmail: "",
-    message: "",
-  });
-  const [isMailSent, setMailSentStatus] = useState(false);
-  const formRef = useRef(null);
+enum MailState {
+  "unsent",
+  "successful",
+  "failure",
+}
 
-  const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
+const MailForm = ({}): ReactElement => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<FormData>();
+  const [mailSentStatus, setMailSentStatus] = useState(MailState.unsent);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const sentBtnClick = () => {
-    const senderName = formData.senderName;
-    const senderEmail = formData.senderEmail;
-    const message = formData.message;
+  const onSendMail = (data: FormData) => {
+    setIsLoading(true);
+    fetch("/api/sendMail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: data.name,
+        email: data.email,
+        message: data.message,
+      }),
+    }).then((data) => {
+      data.json().then((resp) => {
+        setIsLoading(false);
+        console.log(resp.data, resp.error);
+        if (resp.error) {
+          setMailSentStatus(MailState.failure);
+        } else {
+          setMailSentStatus(MailState.successful);
+        }
 
-    console.log("send email with following data");
-    console.log("Sender Name:", senderName);
-    console.log("Sender Email:", senderEmail);
-    console.log("Message:", message);
-
-    // Send Email
-
-    setFormData({
-      senderName: "",
-      senderEmail: "",
-      message: "",
+        setTimeout(() => {
+          setMailSentStatus(MailState.unsent);
+        }, 5000);
+      });
     });
-
-    setMailSentStatus(true);
+    reset();
   };
 
   useEffect(() => {
-    if (isMailSent) {
+    if (mailSentStatus !== MailState.unsent) {
       setTimeout(() => {
-        setMailSentStatus(false);
+        setMailSentStatus(MailState.unsent);
       }, 3000);
     }
-  }, [isMailSent]);
+  }, [mailSentStatus]);
 
   return (
     <div className="form-wrapper">
-      <form action="" ref={formRef}>
+      <form onSubmit={handleSubmit(onSendMail)}>
         <input
           type="test"
-          className="sender-name-input"
-          name="senderName"
-          id=""
           placeholder="Your Name"
-          value={formData.senderName}
-          onChange={handleInputChange}
+          className={`sender-name-input ${errors.name ? "" : ""}`}
+          {...register("name", { required: "Your Name is Required" })}
+          aria-invalid={errors.name ? "true" : "false"}
         />
+        {errors.name && (
+          <p role="alert" className="form-error-msg">
+            {errors.name.message}
+          </p>
+        )}
+
         <input
           type="email"
-          className="sender-email-input"
-          name="senderEmail"
-          id=""
           placeholder="Your Email Address"
-          value={formData.senderEmail}
-          onChange={handleInputChange}
+          className="sender-email-input"
+          {...register("email", {
+            required: "Your Email is Required",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Invalid email address",
+            },
+          })}
+          aria-invalid={errors.email ? "true" : "false"}
         />
+        {errors.email && (
+          <p role="alert" className="form-error-msg">
+            {errors.email.message}
+          </p>
+        )}
+
         <textarea
-          className="message-input"
-          name="message"
-          id=""
           placeholder="Your Message"
-          value={formData.message}
-          onChange={handleInputChange}
+          className="message-input"
+          {...register("message")}
         />
-        {/* <input type="submit" className="send-btn" value="Send" /> */}
-        <div id="send-btn" className={isMailSent ? "sent" : ""}>
-          <div id="envelope">
-            <div id="envelope-inside"></div>
-            <div id="envelope-body">
-              <div id="left-half"></div>
-              <div id="right-half"></div>
-            </div>
-            <div id="envelope-top"></div>
-            <div id="letter"></div>
-          </div>
-          <div className="btn-overlay" onClick={sentBtnClick}>
-            Send
-          </div>
-        </div>
+
+        <button
+          id="send-btn"
+          className={mailSentStatus === MailState.successful ? "sent" : ""}
+        >
+          {isLoading ? (
+            <FontAwesomeIcon icon={faSpinner} spin size="2x" color="#f2af29" />
+          ) : (
+            <>
+              <div id="envelope">
+                <div id="envelope-inside"></div>
+                <div id="envelope-body">
+                  <div id="left-half"></div>
+                  <div id="right-half"></div>
+                </div>
+                <div id="envelope-top"></div>
+                <div id="letter"></div>
+              </div>
+              <div className="btn-overlay">Send</div>
+            </>
+          )}
+        </button>
       </form>
     </div>
   );

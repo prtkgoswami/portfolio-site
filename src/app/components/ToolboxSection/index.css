@@ -10,92 +10,43 @@
   min-width: 100%;
 }
 
-.hex-row {
+.skill-content {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px 10px;
+  max-width: 70rem;
+}
+.skill-section {
+  padding: 5px 15px;
+}
+.skill-section-title {
+  text-transform: capitalize;
+  font-size: 1.6rem;
+  padding: 10px 0;
+  color: #e88c5d;
+}
+.skill-section-content {
   display: flex;
   flex-direction: row;
-  gap: 0px 20px;
-  justify-content: center;
-  /* align-items: center; */
+  flex-wrap: wrap;
+  gap: 10px 10px;
+  padding: 10px 0;
 }
-
-.hex-wrapper {
-  transition: transform 0.2s ease-out;
-  transform-origin: center;
-}
-.hex-wrapper:hover {
-  transform: scale(1.1);
-}
-
-.circle {
-  background: rgba(200, 118, 224, 0.5);
-  /* background-color: rgba(232, 140, 93, 0.5); */
-  height: 160px;
-  aspect-ratio: 1;
-  position: relative;
-  border-radius: 100%;
-  box-shadow: 0 -5px 10px 1px rgba(0, 0, 0, 0.3) inset;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: bob 2.5s infinite ease-in-out alternate;
-}
-.hex-row:nth-child(odd) .hex-wrapper:nth-child(odd) .circle,
-.hex-row:nth-child(even) .hex-wrapper:nth-child(even) .circle {
-  /* background: rgba(176, 65, 184, 0.5); */
-  background-color: rgba(232, 140, 93, 0.5);
-}
-.circle-icon-wrapper {
-  position: relative;
-  height: 60%;
-  width: 60%;
-}
-.circle-text {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.skill-content-item {
+  padding: 5px 15px;
+  border-radius: 20%/50%;
+  background-color: rgba(146, 62, 152, 0.4);
+  backdrop-filter: blur(2px);
   font-size: 1rem;
-  text-align: center;
-  /* font-weight: 600; */
-  text-transform: uppercase;
-  line-height: 1.8;
-  user-select: none;
-  padding: 20px;
-  background: rgba(22, 22, 22, 0.8);
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 0.2s ease-out;
-}
-.circle:hover .circle-text {
-  opacity: 1;
-}
-
-@media only screen and (min-width: 2000px) {
-  #toolbox-section .section-body {
-    min-width: 0;
-    max-width: 60%;
-  }
 }
 
 @media only screen and (max-width: 600px) {
-  #toolbox-section .section-body {
-    padding-bottom: 3rem;
+  .skill-content {
+    width: 100%;
+    grid-template-columns: 1fr;
   }
-  .circle {
-    height: 60px;
-  }
-}
-
-@keyframes bob {
-  from {
-    transform: translateY(10px);
-  }
-  to {
-    transform: translateY(-10px);
+  .skill-section-title {
+    font-size: 1.2rem;
   }
 }

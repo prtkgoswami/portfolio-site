@@ -23,7 +23,7 @@ const ContactSection = ({
       </div>
       <div className="section-body">
         <SocialMediaSection />
-        {false && <MailForm />}
+        <MailForm />
       </div>
     </div>
   );

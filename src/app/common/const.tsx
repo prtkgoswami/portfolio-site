@@ -49,35 +49,27 @@ export const SOCIAL_LINKS = [
   },
 ];
 
-export type Skill = {
-  name: string;
-  icon: string;
+export const SKILL_LIST = {
+  basics: ["HTML", "CSS", "JavaScript", "TypeScript", "C++", "Python", "C#"],
+  "frameworks & Library": ["Next.js", "React.js"],
+  "state management": ["Redux"],
+  styling: ["Tailwind CSS"],
+  backend: ["Node.js", "Express.js", "Django"],
+  database: ["MySQL"],
+  deployment: ["Vercel", "Heroku"],
+  tools: [
+    "Git",
+    "VS Code",
+    "VS Studio",
+    "Unity",
+    "Trello",
+    "Jira",
+    "Postman",
+    "Soap UI",
+    "Photoshop",
+  ],
+  "game dev": ["Unity"],
 };
-
-export const SKILL_LIST: Skill[] = [
-  { name: "HTML", icon: "/skill_logo_html.svg" },
-  { name: "CSS", icon: "/skill_logo_css.svg" },
-  { name: "JavaScript", icon: "/skill_logo_javascript.svg" },
-  { name: "TypeScript", icon: "/skill_logo_typescript.svg" },
-  { name: "React.js", icon: "/skill_logo_reactjs.svg" },
-  { name: "Next.js", icon: "/skill_logo_nextjs.svg" },
-  { name: "Node.js", icon: "/skill_logo_nodejs.svg" },
-  { name: "Django", icon: "/skill_logo_django.svg" },
-  { name: "MySQL", icon: "/skill_logo_mysql.svg" },
-  { name: "C++", icon: "/skill_logo_cpp.svg" },
-  { name: "Python", icon: "/skill_logo_python.svg" },
-  { name: "C#", icon: "/skill_logo_csharp.svg" },
-  { name: "Visual Studio", icon: "/skill_logo_vs.svg" },
-  { name: "Visual Studio Code", icon: "/skill_logo_vsc.svg" },
-  { name: "Adobe Photoshop", icon: "/skill_logo_photoshop.svg" },
-  { name: "Figma", icon: "/skill_logo_figma.svg" },
-  { name: "Trello", icon: "/skill_logo_trello.svg" },
-  { name: "Jira", icon: "/skill_logo_jira.svg" },
-  { name: "Postman", icon: "/skill_logo_postman.svg" },
-  { name: "Git", icon: "/skill_logo_git.svg" },
-  { name: "Windows", icon: "/skill_logo_windows.svg" },
-  { name: "Linux", icon: "/skill_logo_linux.svg" },
-];
 
 export type Experience = {
   orgName: string;
