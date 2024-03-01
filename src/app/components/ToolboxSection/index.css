@@ -19,12 +19,16 @@
 }
 .skill-section {
   padding: 5px 15px;
+  /* background-color: rgba(146, 62, 152, 0.4); */
+  backdrop-filter: blur(2px);
+  border-radius: 10px;
 }
 .skill-section-title {
   text-transform: capitalize;
   font-size: 1.6rem;
   padding: 10px 0;
   color: #e88c5d;
+  border-bottom: 1px solid #fadbac;
 }
 .skill-section-content {
   display: flex;
@@ -34,11 +38,9 @@
   padding: 10px 0;
 }
 .skill-content-item {
-  padding: 5px 15px;
-  border-radius: 20%/50%;
-  background-color: rgba(146, 62, 152, 0.4);
-  backdrop-filter: blur(2px);
+  padding: 5px 5px;
   font-size: 1rem;
+  color: #fadbac;
 }
 
 @media only screen and (max-width: 600px) {
