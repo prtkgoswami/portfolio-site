@@ -1,6 +1,10 @@
-import { faMobileScreenButton } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMobileScreenButton,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState } from "react";
+import CustomBackground from "../CustomBackground";
 import MailForm from "./MailForm";
 import SocialMediaSection from "./SocialMediaSection";
 import "./index.css";
@@ -12,18 +16,14 @@ type ContactSectionProps = {
 const ContactSection = ({
   refCallback,
 }: ContactSectionProps): React.ReactElement => {
-  const pageRef = useRef(null);
-  const [isIntersecting, setIsIntersecting] = useState(false);
-
   return (
     <div id="contact-section" className="pages" ref={refCallback}>
-      <div className="page-title">
-        Let&#8217;s connect...
-        <FontAwesomeIcon icon={faMobileScreenButton} className="mobile-icon" />
-      </div>
-      <div className="section-body">
-        <SocialMediaSection />
-        <MailForm />
+      <div className="section-content">
+        <div className="section-title">Let&apos;s Connect</div>
+        <div className="contacts-wrapper">
+          <SocialMediaSection />
+          <MailForm />
+        </div>
       </div>
     </div>
   );

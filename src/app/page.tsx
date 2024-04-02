@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import WebsiteWrapper from "./components/WebisteWrapper";
+import WebsiteWrapper from "./components/WebsiteWrapper";
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);

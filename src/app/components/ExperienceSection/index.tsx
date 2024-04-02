@@ -1,6 +1,11 @@
-import { EXPERIENCE_LIST } from "@/app/common/const";
-import Image from "next/image";
-import { useState } from "react";
+import { EDUCATION_LIST, EXPERIENCE_LIST } from "@/app/common/const";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
+import {
+  faChevronDown,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ReactElement, useEffect, useState } from "react";
 import "./index.css";
 
 type ExperienceSectionProps = {
@@ -9,8 +14,10 @@ type ExperienceSectionProps = {
 
 const ExperienceSection = ({
   refCallback,
-}: ExperienceSectionProps): React.ReactElement => {
+}: ExperienceSectionProps): ReactElement => {
+  const [activeCategory, setActiveCategory] = useState("work");
   const [expandedIndex, setExpandedIndex] = useState(-1);
+  const [contentList, setContentList] = useState(EXPERIENCE_LIST);
 
   const handleExpClick = (event: any, index: number) => {
     const isExpanded = index === expandedIndex;
@@ -19,90 +26,126 @@ const ExperienceSection = ({
       setExpandedIndex(-1);
     } else {
       setExpandedIndex(index);
-      event.target.scrollIntoView();
     }
   };
 
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category);
+  };
+
+  useEffect(() => {
+    if (activeCategory === "work") {
+      setContentList(EXPERIENCE_LIST);
+    } else {
+      setContentList(EDUCATION_LIST);
+    }
+  }, [activeCategory]);
+
   return (
-    <div id="experience-section" className="pages" ref={refCallback}>
-      <div className="page-title">Experience</div>
-      <div className="section-body">
-        {EXPERIENCE_LIST.map((experience, expIndex) => (
-          <div
-            key={`exp-${expIndex}`}
-            className="exp-block"
-            onClick={(event) => {
-              handleExpClick(event, expIndex);
-            }}
+    <section id="experience-section" className="pages" ref={refCallback}>
+      <div className="section-content">
+        <div className="section-title">
+          <p
+            className={`${activeCategory === "work" ? "" : "inactive"}`}
+            onClick={() => handleCategoryChange("work")}
           >
-            <div className="exp-banner">
+            experience
+          </p>
+          <div className="seperator" />
+          <p
+            className={`${activeCategory === "edu" ? "" : "inactive"}`}
+            onClick={() => handleCategoryChange("edu")}
+          >
+            education
+          </p>
+        </div>
+
+        <div id="content-wrapper">
+          <div id="content-container">
+            {contentList.map((content, contentIndex) => (
               <div
-                className="exp-banner-img-wrapper"
-                style={{ backgroundColor: `${experience.bannerColor}` }}
+                key={`content-${contentIndex}`}
+                className="content-block"
+                onClick={(event) => {
+                  handleExpClick(event, contentIndex);
+                }}
               >
-                <div className="exp-banner-img">
-                  <Image
-                    src={experience.imgSrc}
-                    fill
-                    alt="Experience Logo"
-                    style={{ objectFit: "cover" }}
+                <div className="content-banner">
+                  <div className="content-banner-text-wrapper">
+                    <div className="content-banner-title">
+                      <div>{content.orgName}</div>
+                      <div>{content.role}</div>
+                    </div>
+                    <div className="content-banner-duration">
+                      <div>From: {content.startYear}</div>
+                      <div>To: {content.endYear}</div>
+                    </div>
+                  </div>
+                  <div className="content-banner-expand-btn">
+                    <div
+                      className={`content-banner-expand-icon ${
+                        expandedIndex === contentIndex
+                          ? "minus-icon"
+                          : "plus-icon"
+                      }`}
+                    >
+                      <div className="h-bar">
+                        <div className="v-bar"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="content-banner-mobile-expand-btn">
+                  <FontAwesomeIcon
+                    icon={faChevronDown}
+                    className={`${
+                      expandedIndex === contentIndex
+                        ? "content-banner-mobile-minimize-icon"
+                        : "content-banner-mobile-maximize-icon"
+                    }`}
                   />
                 </div>
-              </div>
-              <div className="exp-banner-text-wrapper">
-                <div className="exp-banner-title">
-                  <div>{experience.orgName}</div>
-                  <div>{experience.role}</div>
-                </div>
-                <div className="exp-banner-duration">
-                  <div>From: {experience.startYear}</div>
-                  {experience.endYear !== "Present" && (
-                    <div>To: {experience.endYear}</div>
-                  )}
-                </div>
-              </div>
-              <div className="exp-banner-expand-btn">
+
                 <div
-                  className={`exp-banner-expand-icon ${
-                    expandedIndex === expIndex ? "minus-icon" : "plus-icon"
-                  }`}
+                  className="content-item-content"
+                  style={
+                    expandedIndex === contentIndex
+                      ? { maxHeight: "2000px" }
+                      : { maxHeight: "0" }
+                  }
                 >
-                  <div className="h-bar">
-                    <div className="v-bar"></div>
+                  <div className="content-item-desc">
+                    <ul className="content-item-responsibilities">
+                      {content.responsibilities.map(
+                        (responsibility, respIndex) => (
+                          <li key={`content-responsibility-${respIndex}`}>
+                            <p>
+                              <FontAwesomeIcon icon={faChevronRight} />
+                            </p>
+                            <p>{responsibility}</p>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                    <ul className="content-item-achievements">
+                      {content.achievements.map((achievement, achIndex) => (
+                        <li key={`content-achievement-${achIndex}`}>
+                          <p>
+                            <FontAwesomeIcon icon={faChevronRight} />
+                          </p>
+                          {achievement}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div
-              className="exp-item-content"
-              style={
-                expandedIndex === expIndex
-                  ? { maxHeight: "1000px" }
-                  : { maxHeight: "0" }
-              }
-            >
-              <div className="exp-item-desc">
-                <ul className="exp-item-responsibilities">
-                  {experience.responsibilities.map(
-                    (responsibility, respIndex) => (
-                      <li key={`exp-responsibility-${respIndex}`}>
-                        {responsibility}
-                      </li>
-                    )
-                  )}
-                </ul>
-                <ul className="exp-item-achievements">
-                  {experience.responsibilities.map((achievement, achIndex) => (
-                    <li key={`exp-achievement-${achIndex}`}>{achievement}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -43,7 +43,6 @@ const MailForm = ({}): ReactElement => {
     }).then((data) => {
       data.json().then((resp) => {
         setIsLoading(false);
-        console.log(resp.data, resp.error);
         if (resp.error) {
           setMailSentStatus(MailState.failure);
         } else {
@@ -112,7 +111,7 @@ const MailForm = ({}): ReactElement => {
           className={mailSentStatus === MailState.successful ? "sent" : ""}
         >
           {isLoading ? (
-            <FontAwesomeIcon icon={faSpinner} spin size="2x" color="#f2af29" />
+            <FontAwesomeIcon icon={faSpinner} spin size="2x" />
           ) : (
             <>
               <div id="envelope">

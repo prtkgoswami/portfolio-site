@@ -15,7 +15,6 @@ const SocialMediaSection =
             target="_blank"
             aria-label={item.name}
           >
-            {/* <div className="social-title">{item.name}</div> */}
             <div className="social-block">
               <FontAwesomeIcon icon={item.icon} />
               <div className="social-title">{item.name}</div>
