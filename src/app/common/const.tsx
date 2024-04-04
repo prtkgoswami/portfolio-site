@@ -223,7 +223,7 @@ export const PROJECT_DETAILS: Project[] = [
       mobile: "",
     },
     fit: "object-fill",
-    desc: "Experience the classic game of Rock, Paper, Scissors like never before with my web app that adds a touch of geeky fun inspired by The Big Bang Theory.",
+    desc: "Embark on a serene journey through the solar system in my exploratory spaceship game, set to lo-fi tunes, inviting players to relax and wander among the planets.",
     tech: ["Unity", "C#"],
   },
   {
@@ -236,7 +236,7 @@ export const PROJECT_DETAILS: Project[] = [
       mobile: "",
     },
     fit: "object-fill",
-    desc: "Experience the classic game of Rock, Paper, Scissors like never before with my web app that adds a touch of geeky fun inspired by The Big Bang Theory.",
+    desc: "Embark on an interstellar journey in my debut 2D side-scroller game, where you pilot a spacecraft on a mission to deliver resources to a distant planet while navigating through perilous asteroid fields and enemy ships.",
     tech: ["Unity", "C#"],
   },
   {
@@ -249,7 +249,7 @@ export const PROJECT_DETAILS: Project[] = [
       mobile: "",
     },
     fit: "object-fill",
-    desc: "Experience the classic game of Rock, Paper, Scissors like never before with my web app that adds a touch of geeky fun inspired by The Big Bang Theory.",
+    desc: "Dive into the thrilling world of espionage, where players must infiltrate enemy territory, neutralize guard robots, and recover stolen documents from the notorious Dr. Anti-Vector.",
     tech: ["Unity", "C#", "Unity VR"],
   },
 ];

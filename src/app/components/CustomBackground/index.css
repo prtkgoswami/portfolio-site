@@ -26,5 +26,5 @@
   /* transform: scale(2.5); */
 }
 .item-container.active > .dot {
-  color: rgba(var(--accent-1-rgb), 1);
+  color: rgba(var(--accent-1-rgb), 0.8);
 }

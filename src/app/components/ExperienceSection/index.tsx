@@ -30,7 +30,10 @@ const ExperienceSection = ({
   };
 
   const handleCategoryChange = (category: string) => {
-    setActiveCategory(category);
+    setExpandedIndex(-1);
+    setTimeout(() => {
+      setActiveCategory(category);
+    }, 800);
   };
 
   useEffect(() => {

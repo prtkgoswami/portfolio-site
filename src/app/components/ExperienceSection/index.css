@@ -114,7 +114,7 @@
   flex-direction: column;
   row-gap: 15px;
   overflow: hidden;
-  transition: all 1s ease-out;
+  transition: all 0.5s ease-in-out;
   height: auto;
   align-items: center;
 }
