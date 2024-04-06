@@ -1,6 +1,12 @@
 "use client";
+import { Montserrat } from "next/font/google";
 import { useEffect, useState } from "react";
 import WebsiteWrapper from "./components/WebsiteWrapper";
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+});
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
@@ -22,5 +28,9 @@ export default function Home() {
     };
   }, []);
 
-  return <WebsiteWrapper isMobile={isMobile} />;
+  return (
+    <main className={montserrat.variable}>
+      <WebsiteWrapper isMobile={isMobile} />
+    </main>
+  );
 }

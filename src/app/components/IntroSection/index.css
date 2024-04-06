@@ -18,11 +18,14 @@
   text-align: center;
   position: relative;
   z-index: 2;
+  background-color: rgba(var(--background-rgb), 0.5);
+  padding: 0 2rem;
 }
 #name > p {
+  font-family: var(--font-montserrat);
+  font-weight: 400;
   font-size: 8rem;
   text-transform: uppercase;
-  font-weight: 600;
   color: rgba(var(--foreground-rgb), 1);
   user-select: none;
 }
@@ -30,7 +33,9 @@
 #resume-button {
   display: flex;
   flex-direction: row;
+  font-family: var(--font-montserrat);
   font-size: 1.4rem;
+  font-weight: 400;
   padding: 15px 25px;
   column-gap: 20px;
   align-items: center;
@@ -40,7 +45,6 @@
   border: 2px solid rgb(var(--accent-1-rgb));
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
   text-transform: uppercase;
-  font-weight: 600;
 }
 #resume-button:hover {
   background-color: rgba(var(--background-rgb), 1);

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { SizeProp } from "@fortawesome/fontawesome-svg-core";
 import { IconDefinition } from "@fortawesome/free-brands-svg-icons";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
@@ -7,7 +8,6 @@ import "./index.css";
 
 const IMPACT_RANGE: number = 200;
 const FRAME_SIZE = 3;
-const DEACTIVATE_TIME = 3000;
 
 const convertRemToPixels = (rem: number) => {
   return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);

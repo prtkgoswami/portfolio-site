@@ -39,7 +39,7 @@ const Header = ({
         id="header-logo-container"
         onClick={() => handleNavClick("#intro-section")}
       >
-        <Image src="/imgs/web_logo.png" height={50} width={50} alt="logo" />
+        <Image src="/imgs/web_logo_v3.png" height={50} width={50} alt="logo" />
       </div>
       <div id="header-actions">
         <Nav handleNavClick={handleNavClick} />

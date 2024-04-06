@@ -1,5 +1,4 @@
 import { EDUCATION_LIST, EXPERIENCE_LIST } from "@/app/common/const";
-import { faStar } from "@fortawesome/free-regular-svg-icons";
 import {
   faChevronDown,
   faChevronRight,
@@ -30,10 +29,14 @@ const ExperienceSection = ({
   };
 
   const handleCategoryChange = (category: string) => {
-    setExpandedIndex(-1);
-    setTimeout(() => {
+    if (expandedIndex > -1) {
+      setExpandedIndex(-1);
+      setTimeout(() => {
+        setActiveCategory(category);
+      }, 400);
+    } else {
       setActiveCategory(category);
-    }, 800);
+    }
   };
 
   useEffect(() => {

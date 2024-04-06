@@ -25,6 +25,8 @@
 }
 
 .section-title {
+  font-family: var(--font-montserrat);
+  font-weight: 600;
   font-size: 2rem;
   border-bottom: 1px solid rgb(var(--accent-1-rgb));
   padding: 10px;

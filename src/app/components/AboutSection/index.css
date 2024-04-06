@@ -27,7 +27,9 @@
   padding: 10px 20px;
 }
 .skills-section-title {
+  font-family: var(--font-montserrat);
   font-size: 2rem;
+  font-weight: 600;
   border-bottom: 1px solid rgb(var(--accent-1-rgb));
   padding: 10px;
   text-transform: uppercase;
@@ -36,6 +38,7 @@
   padding: 20px 0;
 }
 .skill-title {
+  font-family: var(--font-montserrat);
   font-size: 1.4rem;
   text-transform: capitalize;
   padding: 5px 10px;
