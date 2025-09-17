@@ -1,110 +1,198 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { SizeProp } from "@fortawesome/fontawesome-svg-core";
-import { IconDefinition } from "@fortawesome/free-brands-svg-icons";
-import { faCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactElement, useEffect, useRef, useState } from "react";
-import "./index.css";
+import React, { useEffect, useRef } from "react";
 
-const IMPACT_RANGE: number = 200;
-const FRAME_SIZE = 3;
+const IMPACT_RANGE = 200;
+const FRAME_SIZE = 40; // px spacing between items
 
-const convertRemToPixels = (rem: number) => {
-  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+const ICON_MAP: Record<string, { glyph: string; weight: number }> = {
+  circle: { glyph: "\uf111", weight: 900 },
+  ring: { glyph: "\uf111", weight: 400 },
+  star: { glyph: "\uf005", weight: 900 },
+  heart: { glyph: "\uf004", weight: 900 },
+  plus: { glyph: "\uf067", weight: 900 },
 };
 
-type CustomBackgroundProps = {
+type Props = {
   isInteractive?: boolean;
-  dotIcon?: IconDefinition;
-  dotSize?: SizeProp;
-  isAlternateColoring?: boolean;
+  /** either pass a glyph like '\uf111' OR a friendly name like 'circle' */
+  icon?: string;
+  fontSize?: number;
+  accentCssVar?: string; // e.g. '--accent-1-rgb'
 };
 
-const CustomBackground = ({
-  isInteractive = false,
-  dotIcon = faCircle,
-  dotSize = "2xs",
-  isAlternateColoring = false,
-}: CustomBackgroundProps): ReactElement => {
-  const bgRef = useRef(null);
-  const [dotElementList, setDotElementList] = useState<ReactElement[]>([]);
-
-  const bgInteraction = (e: MouseEvent) => {
-    const dots = document.querySelectorAll(".item-container");
-    if (dots.length > 0) {
-      const mouseX = e.pageX;
-      const mouseY = e.pageY;
-
-      dots.forEach((dot) => {
-        const sqrX = (dot as HTMLDivElement).offsetLeft + 20;
-        const sqrY = (dot as HTMLDivElement).offsetTop + 20;
-
-        const diffX = mouseX - sqrX;
-        const diffY = mouseY - sqrY;
-        const distFromCursor = Math.sqrt(diffX * diffX + diffY * diffY);
-
-        if (distFromCursor < IMPACT_RANGE) {
-          dot.classList.add("active");
-          const roundedDist: number = Number(
-            (distFromCursor / IMPACT_RANGE).toFixed(1)
-          );
-          (dot as HTMLDivElement).style.filter = `grayscale(${roundedDist})`;
-          (dot as HTMLDivElement).style.transform = `scale(${
-            1 + (1.5 - roundedDist)
-          })`;
-        } else {
-          dot.classList.remove("active");
-        }
-      });
-    }
-  };
+export default function CanvasBackground({
+  isInteractive = true,
+  icon,
+  fontSize = 14,
+  accentCssVar = "--accent-1-rgb",
+}: Props) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const mouseRef = useRef<{ x: number; y: number } | null>(null);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (bgRef.current) {
-      const parentDiv = bgRef.current as HTMLDivElement;
-      const bgWidth = parentDiv.offsetWidth;
-      const bgHeight = parentDiv.offsetHeight;
+    let mounted = true;
+    const canvas = canvasRef.current!;
+    if (!canvas) return;
 
-      parentDiv.innerHTML = "";
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-      const sizePerDot = convertRemToPixels(FRAME_SIZE);
-      const rowCount = Math.floor(bgHeight / sizePerDot);
-      const colCount = Math.floor(bgWidth / sizePerDot);
+    const dpr = window.devicePixelRatio || 1;
 
-      parentDiv.style.gridTemplateColumns = "1fr ".repeat(colCount);
-      parentDiv.style.gridTemplateRows = "1fr ".repeat(rowCount);
-      const dotContainerTemplate = (
-        <div
-          className={`item-container ${isAlternateColoring ? "alternate" : ""}`}
-        >
-          <FontAwesomeIcon icon={dotIcon} size={dotSize} className="dot" />
-        </div>
-      );
+    // 🔑 Resize based on parent element
+    const resize = () => {
+      if (!canvas.parentElement) return;
+      const { width: w, height: h } = canvas.parentElement.getBoundingClientRect();
 
-      const dotContainers: ReactElement[] = new Array(rowCount * colCount).fill(
-        dotContainerTemplate
-      );
-      setDotElementList(dotContainers);
-    }
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
 
-    if (isInteractive) {
-      document.addEventListener("mousemove", bgInteraction);
-    }
+    // 🔑 Compute grid positions based on parent
+    const computeDots = () => {
+      if (!canvas.parentElement) return [];
+      const { width: w, height: h } = canvas.parentElement.getBoundingClientRect();
+      const cols = Math.floor(w / FRAME_SIZE);
+      const rows = Math.floor(h / FRAME_SIZE);
 
-    return () => {
-      if (isInteractive) {
-        document.removeEventListener("mousemove", bgInteraction);
+      const arr: { x: number; y: number }[] = [];
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          arr.push({
+            x: c * FRAME_SIZE + FRAME_SIZE / 2,
+            y: r * FRAME_SIZE + FRAME_SIZE / 2,
+          });
+        }
+      }
+      return arr;
+    };
+
+    resize();
+    let dots = computeDots();
+
+    // glyph mapping
+    const entry = icon ? ICON_MAP[icon] : null;
+    const glyph = entry?.glyph ?? icon ?? null;
+    const fontWeight = entry?.weight ?? 900;
+
+    // accent color
+    const rawAccent = getComputedStyle(document.documentElement)
+      .getPropertyValue(accentCssVar)
+      .trim();
+    const accentRgb = rawAccent ? rawAccent.replace(/;$/, "") : "128,0,128";
+
+    // ensure font loaded
+    const ensureFontLoaded = async (): Promise<boolean> => {
+      // always return a boolean
+      if (!glyph) return false;
+
+      try {
+        await document.fonts.load(`${fontWeight} ${fontSize}px "Font Awesome 6 Free"`);
+        return document.fonts.check(`${fontWeight} ${fontSize}px "Font Awesome 6 Free"`);
+      } catch (err) {
+        return false;
       }
     };
-  }, []);
+
+    let fontReadyPromise: Promise<boolean> | null = glyph
+      ? ensureFontLoaded()
+      : null;
+
+    // draw loop
+    const draw = async () => {
+      if (!mounted) return;
+      if (fontReadyPromise) {
+        await fontReadyPromise;
+        fontReadyPromise = null;
+      }
+
+      ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+
+      for (let i = 0; i < dots.length; i++) {
+        const { x, y } = dots[i];
+        let scale = 1;
+        let alpha = 0.2;
+
+        if (mouseRef.current) {
+          const dx = mouseRef.current.x - x;
+          const dy = mouseRef.current.y - y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < IMPACT_RANGE) {
+            const t = dist / IMPACT_RANGE;
+            scale = 1 + (.5 - t);
+            alpha = Math.max(0.2, 1 - t);
+          }
+        }
+
+        const color = `rgba(${accentRgb}, ${alpha})`;
+
+        if (glyph) {
+          ctx.save();
+          ctx.font = `${fontWeight} ${fontSize * scale}px "Font Awesome 6 Free"`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = color;
+          ctx.fillText(glyph, x, y);
+          ctx.restore();
+        } else {
+          ctx.beginPath();
+          ctx.arc(x, y, 4 * scale, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(draw);
+    };
+
+    rafRef.current = requestAnimationFrame(draw);
+
+    // events
+    const handleMove = (e: MouseEvent) => {
+      if (!isInteractive) return;
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const handleLeave = () => {
+      mouseRef.current = null;
+    };
+
+    // 🔑 Use ResizeObserver instead of window.resize
+    const resizeObserver = new ResizeObserver(() => {
+      resize();
+      dots = computeDots();
+    });
+    if (canvas.parentElement) {
+      resizeObserver.observe(canvas.parentElement);
+    }
+
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseleave", handleLeave);
+
+    // cleanup
+    return () => {
+      mounted = false;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("mouseleave", handleLeave);
+      resizeObserver.disconnect();
+    };
+  }, [isInteractive, icon, fontSize, accentCssVar]);
 
   return (
-    <div id="background-container" ref={bgRef}>
-      {dotElementList.map((item, index) => (
-        <div key={index}>{item}</div>
-      ))}
-    </div>
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        display: "block",
+        zIndex: -1,
+      }}
+    />
   );
-};
-
-export default CustomBackground;
+}

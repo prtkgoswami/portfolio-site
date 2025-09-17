@@ -6,17 +6,22 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactElement, useEffect, useState } from "react";
 import "./index.css";
+import { Experience } from "@sanity/types";
 
 type ExperienceSectionProps = {
   refCallback: any;
+  workExpList: Experience[];
+  educationList: Experience[];
 };
 
 const ExperienceSection = ({
   refCallback,
+  workExpList,
+  educationList
 }: ExperienceSectionProps): ReactElement => {
   const [activeCategory, setActiveCategory] = useState("work");
   const [expandedIndex, setExpandedIndex] = useState(-1);
-  const [contentList, setContentList] = useState(EXPERIENCE_LIST);
+  const [contentList, setContentList] = useState(workExpList);
 
   const handleExpClick = (event: any, index: number) => {
     const isExpanded = index === expandedIndex;
@@ -39,11 +44,12 @@ const ExperienceSection = ({
     }
   };
 
+  // @ts-ignore react-hooks/exhaustive-deps
   useEffect(() => {
     if (activeCategory === "work") {
-      setContentList(EXPERIENCE_LIST);
+      setContentList(workExpList);
     } else {
-      setContentList(EDUCATION_LIST);
+      setContentList(educationList);
     }
   }, [activeCategory]);
 
@@ -79,21 +85,25 @@ const ExperienceSection = ({
                 <div className="content-banner">
                   <div className="content-banner-text-wrapper">
                     <div className="content-banner-title">
-                      <div>{content.orgName}</div>
-                      <div>{content.role}</div>
+                      <div>{content.organization}</div>
+                      <div>{content.position}</div>
                     </div>
                     <div className="content-banner-duration">
-                      <div>From: {content.startYear}</div>
-                      <div>To: {content.endYear}</div>
+                      <div>From: {new Date(content.from).getFullYear()}</div>
+                      <div>
+                        To: {content.isCurrent ?
+                          "Present" :
+                          <>{content.to ? new Date(content.to).getFullYear() : ""}</>
+                        }
+                      </div>
                     </div>
                   </div>
                   <div className="content-banner-expand-btn">
                     <div
-                      className={`content-banner-expand-icon ${
-                        expandedIndex === contentIndex
+                      className={`content-banner-expand-icon ${expandedIndex === contentIndex
                           ? "minus-icon"
                           : "plus-icon"
-                      }`}
+                        }`}
                     >
                       <div className="h-bar">
                         <div className="v-bar"></div>
@@ -105,11 +115,10 @@ const ExperienceSection = ({
                 <div className="content-banner-mobile-expand-btn">
                   <FontAwesomeIcon
                     icon={faChevronDown}
-                    className={`${
-                      expandedIndex === contentIndex
+                    className={`${expandedIndex === contentIndex
                         ? "content-banner-mobile-minimize-icon"
                         : "content-banner-mobile-maximize-icon"
-                    }`}
+                      }`}
                   />
                 </div>
 
@@ -123,7 +132,7 @@ const ExperienceSection = ({
                 >
                   <div className="content-item-desc">
                     <ul className="content-item-responsibilities">
-                      {content.responsibilities.map(
+                      {content.desc && content.desc.map(
                         (responsibility, respIndex) => (
                           <li key={`content-responsibility-${respIndex}`}>
                             <p>
@@ -133,16 +142,6 @@ const ExperienceSection = ({
                           </li>
                         )
                       )}
-                    </ul>
-                    <ul className="content-item-achievements">
-                      {content.achievements.map((achievement, achIndex) => (
-                        <li key={`content-achievement-${achIndex}`}>
-                          <p>
-                            <FontAwesomeIcon icon={faChevronRight} />
-                          </p>
-                          {achievement}
-                        </li>
-                      ))}
                     </ul>
                   </div>
                 </div>

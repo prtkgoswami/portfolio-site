@@ -8,7 +8,7 @@
 #contact-section .section-content {
   display: flex;
   flex-direction: column;
-  row-gap: 90px;
+  row-gap: 50px;
 }
 #contact-section .section-title {
   font-family: var(--font-montserrat);

@@ -1,36 +1,27 @@
-"use client";
 import { Montserrat } from "next/font/google";
-import { useEffect, useState } from "react";
 import WebsiteWrapper from "./components/WebsiteWrapper";
+import {client as sanityClient} from '@sanity/lib/client'
+import { CONTACTS_QUERY, EXPERIENCE_QUERY, PROJECTS_QUERY, SITE_QUERY, SKILLS_QUERY } from "@/sanity/queries";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
 });
 
-export default function Home() {
-  const [isMobile, setIsMobile] = useState(false);
+export const revalidate = 3600;
 
-  // Create a function to update the screen width
-  const updateScreenWidth = () => {
-    const isMobileMode = window.innerWidth <= 599;
-    setIsMobile(isMobileMode);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", updateScreenWidth);
-    updateScreenWidth();
-
-    // Clean up the event listener when the component unmounts
-    // Cleanup: Disconnect the observer when the component unmounts
-    return () => {
-      window.removeEventListener("resize", updateScreenWidth);
-    };
-  }, []);
+export default async function Home() {
+  const [site, projects, experiences, skills, socials] = await Promise.all([
+    sanityClient.fetch(SITE_QUERY),
+    sanityClient.fetch(PROJECTS_QUERY),
+    sanityClient.fetch(EXPERIENCE_QUERY),
+    sanityClient.fetch(SKILLS_QUERY),
+    sanityClient.fetch(CONTACTS_QUERY),
+  ]);
 
   return (
     <main className={montserrat.variable}>
-      <WebsiteWrapper isMobile={isMobile} />
+      <WebsiteWrapper site={site} projects={projects} experiences={experiences} skills={skills} socials={socials} />
     </main>
   );
 }

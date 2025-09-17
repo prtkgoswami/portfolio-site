@@ -4,21 +4,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactElement } from "react";
 import ProjectCard from "./ProjectCard";
 import "./index.css";
+import { Project } from "@sanity/types";
 
 type ShowcaseSectionProps = {
   refCallback: any;
+  projectList: Project[]
 };
 
 const ShowcaseSection = ({
   refCallback,
+  projectList
 }: ShowcaseSectionProps): ReactElement => {
   return (
     <section id="showcase-section" className="pages" ref={refCallback}>
       <div className="section-content">
         <div className="section-title">projects</div>
         <div className="projects-container">
-          {PROJECT_DETAILS.map((project, index) => (
-            <ProjectCard key={project.name} project={project} />
+          {projectList.map((project, index) => (
+            <ProjectCard key={project.title} project={project} />
           ))}
         </div>
         <div className="repo-container">

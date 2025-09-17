@@ -4,13 +4,14 @@ import "./index.css";
 
 type FooterProps = {
   isMobile: boolean;
+  footerText?: string;
 };
 
-const Footer = ({ isMobile }: FooterProps): ReactElement => {
+const Footer = ({ isMobile , footerText}: FooterProps): ReactElement => {
   return (
     <footer>
-      <div id="footer-text">Pratik Goswami, 2024</div>
-      {!isMobile && <SecretSection />}
+      <div id="footer-text">{footerText}</div>
+      {false && <SecretSection />}
     </footer>
   );
 };

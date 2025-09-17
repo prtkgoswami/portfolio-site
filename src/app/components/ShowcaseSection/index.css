@@ -73,6 +73,23 @@
   color: rgb(var(--foreground-rgb));
   background-color: rgba(var(--background-rgb), 0.8);
 }
+.project-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+.project-category {
+  padding: 0 5px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgb(var(--foreground-rgb));
+  background-color: rgba(var(--background-rgb), 0.8);
+  border-radius: 5px;
+  user-select: none;
+}
 .project-links {
   display: flex;
   flex-direction: row;
@@ -80,7 +97,6 @@
   align-items: center;
   gap: 0 10px;
   justify-self: flex-end;
-  margin-top: 20px;
 }
 .project-link-src {
   transition: color 0.2s ease-out;

@@ -12,9 +12,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.item-container {
-  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+  --dist: 1;
+  filter: grayscale(var(--dist));
+  transform: scale(calc(1 + (1.5 - var(--dist))));
+  transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
 }
 .alternate .dot {
   color: rgba(var(--accent-1-rgb), 0.4);

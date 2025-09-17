@@ -1,3 +1,4 @@
+"use client"
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import React, {
   ReactElement,
@@ -15,12 +16,25 @@ import Header from "../Header";
 import IntroSection from "../IntroSection";
 import ShowcaseSection from "../ShowcaseSection";
 import "./index.css";
+import { Social, Experience, Project, SiteConfig, Skill } from "@/sanity/types";
+import WelcomeLoader from "./WelcomeLoader";
 
-type WebsiteWrapperProps = {
+type ContentData = {
+  site: SiteConfig;
+  projects: Project[];
+  experiences: Experience[];
+  skills: Skill[];
+  socials: Social[];
+}
+
+type WebsiteContentProps = {
   isMobile: boolean;
-};
+} & ContentData;
 
-const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
+type WebsiteWrapperProps = ContentData
+
+
+const WebsiteContent = ({ isMobile, site, skills, projects, experiences, socials }: WebsiteContentProps): ReactElement => {
   const contentRef = useRef(null);
   const sectionsRef = useRef<any[]>([]);
   const [titleIntersectionRatio, setTitleIntersectionRatio] = useState(1);
@@ -81,29 +95,64 @@ const WebsiteWrapper = ({ isMobile }: WebsiteWrapperProps): ReactElement => {
     window.scrollTo(0, 0);
   }, []);
 
+  const workExpList = experiences.filter(exp => exp.type === "experience")
+  const eduExpList = experiences.filter(exp => exp.type === "education")
+
   return (
     <>
       <div className="pages-wrapper">
-        <Header isTransparent={isTransparentHeader} isMobile />
+        <Header isTransparent={isTransparentHeader} isMobile logo={site.logo} />
         <div id="site-content" ref={contentRef}>
-          <IntroSection isMobile />
-          <AboutSection refCallback={refCallback} />
-          <ExperienceSection refCallback={refCallback} />
-          <ShowcaseSection refCallback={refCallback} />
+          <IntroSection isMobile siteData={site} />
+          <AboutSection refCallback={refCallback} aboutText={site.about?.text ?? ""} skillList={skills} />
+          <ExperienceSection refCallback={refCallback} workExpList={workExpList} educationList={eduExpList} />
+          <ShowcaseSection refCallback={refCallback} projectList={projects} />
         </div>
         <div id="end-section">
-          <CustomBackground
-            dotIcon={faPlus}
-            dotSize="xs"
-            isAlternateColoring={true}
-          />
-          <ContactSection refCallback={refCallback} />
 
-          <Footer isMobile={isMobile} />
+          <CustomBackground icon="plus" fontSize={18} isInteractive={false} />
+          <ContactSection refCallback={refCallback} socialData={socials} />
+
+          <Footer isMobile={isMobile} footerText={site.footerText} />
         </div>
       </div>
     </>
   );
+}
+
+const WebsiteWrapper = (props: WebsiteWrapperProps): ReactElement => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
+
+  // Create a function to update the screen width
+  const updateScreenWidth = () => {
+    const isMobileMode = window.innerWidth <= 599;
+    setIsMobile(isMobileMode);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateScreenWidth);
+    updateScreenWidth();
+
+    const timer = setTimeout(() => {
+      setShowLoader(false);
+    }, 2200);
+
+    // Clean up the event listener when the component unmounts
+    // Cleanup: Disconnect the observer when the component unmounts
+    return () => {
+      window.removeEventListener("resize", updateScreenWidth);
+      clearTimeout(timer);
+    };
+  }, []);
+
+
+  return (
+    <div style={{ overflowY: showLoader ? 'hidden' : 'auto', height: showLoader ? '100vh' : '100%' }}>
+      {showLoader && <WelcomeLoader logo={props.site.logo} />}
+      <WebsiteContent isMobile={isMobile} {...props} />
+    </div>
+  )
 };
 
 export default WebsiteWrapper;

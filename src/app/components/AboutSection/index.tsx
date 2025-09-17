@@ -1,28 +1,42 @@
 import { SKILLS_LIST, WELCOME_STR } from "@common/const";
 import { ReactElement } from "react";
+import {Skill} from '@sanity/types'
 import "./index.css";
 
 type AboutSectionProps = {
   refCallback: any;
+  aboutText: string;
+  skillList: Skill[];
 };
 
-const AboutSection = ({ refCallback }: AboutSectionProps): ReactElement => {
+const AboutSection = ({ refCallback, aboutText, skillList }: AboutSectionProps): ReactElement => {
   return (
     <section id="about-section" className="pages" ref={refCallback}>
       <div className="section-content">
         <div id="welcome-wrapper">
-          <div id="welcome">{WELCOME_STR}</div>
+          <p id="welcome">
+            {aboutText ?
+              aboutText.split("\n\n").map((paragraph, i) => (
+                <span key={i}>
+                  {paragraph}
+                  <br />
+                  <br />
+                </span>
+              )) :
+              WELCOME_STR
+            }
+          </p>
         </div>
 
         <section id="skills-section">
           <div className="skills-section-title">Skills</div>
           <div>
-            {Object.entries(SKILLS_LIST).map(([category, skillList]) => (
-              <div className="skill-container" key={category}>
-                <div className="skill-title">{category}</div>
+            {skillList.map(({title, skills}) => (
+              <div className="skill-container" key={title}>
+                <div className="skill-title">{title}</div>
                 <div className="skill-item-container">
-                  {skillList.map((skill, index) => (
-                    <div className="skill-item" key={`${category}-${index}`}>
+                  {skills && skills.map((skill, index) => (
+                    <div className="skill-item" key={`${title}-${index}`}>
                       {skill}
                     </div>
                   ))}

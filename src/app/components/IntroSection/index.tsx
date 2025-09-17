@@ -1,26 +1,41 @@
-import { faCircle } from "@fortawesome/free-regular-svg-icons";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement } from "react";
 import CustomBackground from "../CustomBackground";
+import { SiteConfig } from "@sanity/types";
+import { urlForFile } from "@sanity/lib/file";
 import "./index.css";
 
-const IntroSection = ({ isMobile }: { isMobile: boolean }): ReactElement => {
+type IntroSectionProps = {
+  isMobile: boolean;
+  siteData: SiteConfig;
+}
+
+const IntroSection = ({ isMobile, siteData }: IntroSectionProps): ReactElement => {
+  const cvUrl = siteData.cv ? urlForFile(siteData.cv) : null;
+
   return (
     <section id="intro-section">
-      <CustomBackground isInteractive={isMobile} dotIcon={faCircle} />
+      <CustomBackground isInteractive={isMobile} icon="ring" fontSize={16} />
       <div className="section-content">
-        <div id="name">
-          <p>Pratik</p>
-          <p>Goswami</p>
-        </div>
-
-        <a href="/docs/Pratik-Goswami-Resume.pdf" target="_blank">
-          <div id="resume-button">
-            <p>Curriculam Vitae</p>
-            <FontAwesomeIcon icon={faDownload} />
+        {siteData.title ?
+          <div id="name">
+            {siteData.title.split(' ').map((part, i) => <p key={`web-title-${i}`}>{part}</p>)}
+          </div> :
+          <div id="name">
+            <p>Pratik</p>
+            <p>Goswami</p>
           </div>
-        </a>
+        }
+
+        {cvUrl &&
+          <a href={cvUrl} target="_blank">
+            <div id="resume-button">
+              <p>Curriculam Vitae</p>
+              <FontAwesomeIcon icon={faDownload} />
+            </div>
+          </a>
+        }
       </div>
     </section>
   );

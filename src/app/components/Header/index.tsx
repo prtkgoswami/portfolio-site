@@ -2,15 +2,19 @@ import Image from "next/image";
 import { ReactElement, useState } from "react";
 import Nav from "./Nav";
 import "./index.css";
+import { SanityImage } from "@/sanity/types";
+import { urlFor } from "@/sanity/lib/image";
 
 type HeaderProps = {
   isTransparent: boolean;
   isMobile: boolean;
+  logo?: SanityImage;
 };
 
 const Header = ({
   isTransparent = false,
   isMobile,
+  logo
 }: HeaderProps): ReactElement => {
   const [isLightMode, setIsLightMode] = useState(false);
 
@@ -35,12 +39,14 @@ const Header = ({
 
   return (
     <header className={`${isTransparent ? "transparent" : ""}`}>
-      <div
-        id="header-logo-container"
-        onClick={() => handleNavClick("#intro-section")}
-      >
-        <Image src="/imgs/web_logo_v3.png" height={50} width={50} alt="logo" />
-      </div>
+      {logo ?
+        <div
+          id="header-logo-container"
+          onClick={() => handleNavClick("#intro-section")}
+        >
+          <Image src={urlFor(logo).url()} height={50} width={50} alt={logo.alt ?? ''} />
+        </div> :
+        <div></div>}
       <div id="header-actions">
         <Nav handleNavClick={handleNavClick} />
       </div>

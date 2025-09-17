@@ -28,7 +28,7 @@ type NavProps = {
 };
 
 const Nav = ({ handleNavClick }: NavProps): ReactElement => {
-  const [isMobleMenuExpanded, setIsMobileMenuExpanded] = useState(false);
+  const [isMobileMenuExpanded, setIsMobileMenuExpanded] = useState(false);
 
   return (
     <nav>
@@ -49,13 +49,13 @@ const Nav = ({ handleNavClick }: NavProps): ReactElement => {
       <div id="nav-mobile">
         <div
           id="nav-expand-button"
-          className={`${isMobleMenuExpanded ? "close" : ""}`}
-          onClick={() => setIsMobileMenuExpanded(!isMobleMenuExpanded)}
+          className={`${isMobileMenuExpanded ? "close" : ""}`}
+          onClick={() => setIsMobileMenuExpanded(!isMobileMenuExpanded)}
         >
           <FontAwesomeIcon icon={faBars} />
         </div>
 
-        {isMobleMenuExpanded && (
+        {isMobileMenuExpanded && (
           <div id="mobile-nav-container">
             <div id="mobile-nav-wrapper">
               <div id="mobile-nav-header">
