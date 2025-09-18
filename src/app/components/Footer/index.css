@@ -10,7 +10,7 @@ footer {
 
 #footer-text {
   font-size: 14px;
-  color: rgba(var(--foreground-rgb), 1);
+  color: rgba(var(--accent-1-rgb), 1);
   user-select: none;
 }
 

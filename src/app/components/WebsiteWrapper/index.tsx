@@ -134,22 +134,17 @@ const WebsiteWrapper = (props: WebsiteWrapperProps): ReactElement => {
     window.addEventListener("resize", updateScreenWidth);
     updateScreenWidth();
 
-    const timer = setTimeout(() => {
-      setShowLoader(false);
-    }, 2200);
-
     // Clean up the event listener when the component unmounts
     // Cleanup: Disconnect the observer when the component unmounts
     return () => {
       window.removeEventListener("resize", updateScreenWidth);
-      clearTimeout(timer);
     };
   }, []);
 
 
   return (
     <div style={{ overflowY: showLoader ? 'hidden' : 'auto', height: showLoader ? '100vh' : '100%' }}>
-      {showLoader && <WelcomeLoader logo={props.site.logo} />}
+      {showLoader && <WelcomeLoader onClose={() => setShowLoader(false)} />}
       <WebsiteContent isMobile={isMobile} {...props} />
     </div>
   )

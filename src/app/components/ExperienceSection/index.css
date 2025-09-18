@@ -18,6 +18,9 @@
   color: rgba(var(--foreground-rgb), 0.2);
   border: none;
 }
+#experience-section .section-title p.inactive:hover {
+  color: rgba(var(--accent-1-rgb), 0.3);
+}
 
 #content-wrapper {
   display: flex;

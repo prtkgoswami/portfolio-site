@@ -1,34 +1,64 @@
 #wrapper {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
-    background-color: transparent;
-    z-index: 200;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background-color: transparent;
+  z-index: 200;
 }
 
-#left-panel, #right-panel {
-    height: 100%;
-    width: 50%;
-    position: absolute;
-    top: 0;
-    background: rgb(var(--background-rgb));
+#left-panel,
+#right-panel {
+  height: 100%;
+  width: 50%;
+  position: absolute;
+  top: 0;
+  background: rgb(var(--background-rgb));
+  transform-style: flat;
 }
 #left-panel {
-    left: 0;
-    transform-origin: left;
-    animation: slideLeft 2s ease-out 2.2s 1 forwards;
-    border-right: 2px solid #000;
+  left: 0;
+  transform-origin: left;
+  border-right: 2px solid #000;
+  animation: slideLeft 2s ease-in-out 2.7s 1 forwards;
 }
 #right-panel {
-    right: 0;
-    transform-origin: right;
-    animation: slideRight 2s ease-out 2.2s 1 forwards;
-    border-left: 2px solid #000;
+  right: 0;
+  transform-origin: right;
+  border-left: 2px solid #000;
+  animation: slideRight 2s ease-in-out 2.7s 1 forwards;
 }
+
+.logo {
+  height: 180px;
+  width: 180px;
+  border-radius: 100%;
+  position: absolute;
+  top: calc(50% - 90px);
+  z-index: 300;
+  transform-style: flat;
+}
+.logo-wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+#left-logo.logo {
+  left: calc(50% - 90px);
+  animation:
+    rotate 2s ease-out 0.5s 1 forwards,
+    slideLeft 2s ease-in-out 2.7s 1 forwards;
+}
+#right-logo.logo {
+  right: calc(50% - 90px);
+  animation:
+    rotate 2s ease-out 0.5s 1 forwards,
+    slideRight 2s ease-in-out 2.7s 1 forwards;
+}
+
 .caution-tape {
-    background: repeating-linear-gradient(
+  background: repeating-linear-gradient(
     -30deg,
     rgb(27, 27, 27) 0 40px,
     rgb(156, 86, 220) 40px 80px
@@ -42,52 +72,35 @@
   top: calc(50% + 150px);
 }
 #left-panel .caution-tape {
-    left: 0;
-    background-position: left top;
+  left: 0;
+  background-position: left top;
 }
 #right-panel .caution-tape {
-    right: 0;
-    background-position: -46% 0;
-}
-
-#logo {
-    height: 180px;
-    width: 180px;
-    border-radius: 100%;
-    position: absolute;
-    left: -90px;
-    top: calc(50% - 90px);
-    z-index: 250;
-    box-shadow: 5px 5px 20px #000;
-}
-#logo-wrapper {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    animation: rotate 2s ease-in-out 0.2s 1 forwards;
+  right: 0;
+  background-position: -46% 0;
 }
 
 @keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg)
-    }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 @keyframes slideLeft {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-100%)
-    }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-52vw);
+  }
 }
 @keyframes slideRight {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(120%)
-    }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(52vw);
+  }
 }

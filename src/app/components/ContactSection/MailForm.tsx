@@ -21,12 +21,14 @@ enum MailState {
 const MailForm = ({}): ReactElement => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
     reset,
+    watch
   } = useForm<FormData>();
   const [mailSentStatus, setMailSentStatus] = useState(MailState.unsent);
   const [isLoading, setIsLoading] = useState(false);
+  const formValues = watch(); 
 
   const onSendMail = (data: FormData) => {
     setIsLoading(true);
@@ -77,7 +79,7 @@ const MailForm = ({}): ReactElement => {
         />
         {errors.name && (
           <p role="alert" className="form-error-msg">
-            {errors.name.message}
+            Attention: {errors.name.message}
           </p>
         )}
 
@@ -96,7 +98,7 @@ const MailForm = ({}): ReactElement => {
         />
         {errors.email && (
           <p role="alert" className="form-error-msg">
-            {errors.email.message}
+            Attention: {errors.email.message}
           </p>
         )}
 
@@ -109,6 +111,7 @@ const MailForm = ({}): ReactElement => {
         <button
           id="send-btn"
           className={mailSentStatus === MailState.successful ? "sent" : ""}
+          disabled={!isValid || isLoading}
         >
           {isLoading ? (
             <FontAwesomeIcon icon={faSpinner} spin size="2x" />

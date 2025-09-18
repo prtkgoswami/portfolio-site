@@ -1,21 +1,26 @@
-import { SanityImage } from '@sanity/types';
 import './welcomeLoader.css';
-import { urlFor } from '@/sanity/lib/image';
 import Image from 'next/image';
 
-const WelcomeLoader = ({ logo }: { logo?: SanityImage }) => {
+const WelcomeLoader = ({ onClose }: { onClose: () => void; }) => {
+
     return (
         <div id="wrapper">
-            <div id="left-panel">
+            <div id="left-panel" onAnimationEnd={onClose}>
                 <div className='caution-tape'></div>
             </div>
             <div id="right-panel">
-                <div id="logo">
-                    <div id="logo-wrapper">
-                        <Image src={logo ? urlFor(logo).url() : '/imgs/web_logo_v3.png'} alt={logo?.alt ?? 'Logo'} fill />
-                    </div>
-                </div>
                 <div className='caution-tape'></div>
+            </div>
+
+            <div id="left-logo" className="logo">
+                <div className="logo-wrapper">
+                    <Image src={'/imgs/web_logo_p.png'} alt={'Logo P'} fill />
+                </div>
+            </div>
+            <div id="right-logo" className="logo">
+                <div className="logo-wrapper">
+                    <Image src={'/imgs/web_logo_g.png'} alt={'Logo G'} fill />
+                </div>
             </div>
         </div>
     )
