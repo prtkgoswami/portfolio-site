@@ -1,4 +1,7 @@
 # Portfolio Website
+
+![alt text](./public/screenshots/page_screenshot.png)
+
 <a href="https://pratikgoswami.vercel.app/">Live Website</a>
 
 Welcome to the repository for my personal portfolio website! This website showcases my skills, projects, and experiences. Feel free to explore and learn more about me.
