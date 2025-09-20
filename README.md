@@ -18,7 +18,7 @@ This portfolio website serves as a digital representation of my professional pro
 
 - Responsive Design: Ensures a seamless experience across various devices.
 - Project Showcasing: Highlights my skills and projects effectively.
-- Animated Components: 
+- Animated Components: A reactive background to captivate the viewer
 
 ## Technologies Used
 
@@ -27,3 +27,6 @@ This portfolio website serves as a digital representation of my professional pro
 - TypeScript
 - Next.js
 - TSParticles
+- Sanity CMS
+- Google Analytics
+- Vercel
