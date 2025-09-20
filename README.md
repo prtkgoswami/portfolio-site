@@ -1,6 +1,6 @@
 # Portfolio Website
 
-![alt text](./public/screenshots/page_screenshot.png)
+![Page Screenshot](https://www.pratikgoswami.dev/screenshots/page_screenshot.png)
 
 <a href="https://pratikgoswami.vercel.app/">Live Website</a>
 
