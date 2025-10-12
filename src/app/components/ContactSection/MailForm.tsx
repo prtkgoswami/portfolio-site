@@ -27,13 +27,13 @@ const MailForm = ({}): ReactElement => {
     handleSubmit,
     reset,
     watch
-  } = useForm<FormData>();
+  } = useForm<FormData>({mode: "onBlur"});
   const [mailSentStatus, setMailSentStatus] = useState(MailState.unsent);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const formValues = watch(); 
+  const formValues = watch();
 
-  const onSendMail = (data: FormData) => { 
+  const onSendMail = (data: FormData) => {
     if (!token) {
       alert("Please verify you're human.");
       return;
@@ -82,7 +82,7 @@ const MailForm = ({}): ReactElement => {
   return (
     <div className="form-wrapper">
       <form onSubmit={handleSubmit(onSendMail)}>
-      <input
+        <input
           type="text"
           tabIndex={-1}
           autoComplete="off"
@@ -153,11 +153,11 @@ const MailForm = ({}): ReactElement => {
             Attention: {errors.message.message}
           </p>
         )}
-        
-      <Turnstile
-        sitekey={process.env.NEXT_PUBLIC_CF_SITE_KEY!}
-        onVerify={setToken}
-      />
+
+        <Turnstile
+          sitekey={process.env.NEXT_PUBLIC_CF_SITE_KEY!}
+          onVerify={setToken}
+        />
 
         <button
           id="send-btn"
