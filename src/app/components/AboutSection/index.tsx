@@ -1,4 +1,4 @@
-import { SKILLS_LIST, WELCOME_STR } from "@common/const";
+import { WELCOME_STR } from "@common/const";
 import { ReactElement } from "react";
 import {Skill} from '@sanity/types'
 import "./index.css";

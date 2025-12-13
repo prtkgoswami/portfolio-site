@@ -1,4 +1,4 @@
-import { PROJECT_DETAILS, REPOSITORY_URL } from "@/app/common/const";
+import { REPOSITORY_URL } from "@/app/common/const";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactElement } from "react";

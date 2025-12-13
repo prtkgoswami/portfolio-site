@@ -1,4 +1,3 @@
-import { EDUCATION_LIST, EXPERIENCE_LIST } from "@/app/common/const";
 import {
   faChevronDown,
   faChevronRight,
