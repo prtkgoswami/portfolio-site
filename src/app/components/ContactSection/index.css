@@ -41,6 +41,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 15px;
+  margin-bottom: 3rem;
 }
 .social-block {
   width: 8rem;
@@ -227,7 +228,7 @@
   transition: all 0.3s ease-in-out;
   border: 1px solid rgba(var(--accent-1-rgb));
 }
-#send-btn:disabled .btn-overlay{
+#send-btn:disabled .btn-overlay {
   border: 1px solid rgba(var(--accent-1-rgb), 0.5);
   color: rgba(var(--foreground-rgb), 0.5);
 }

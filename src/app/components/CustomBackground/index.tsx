@@ -1,118 +1,99 @@
+"use client";
 import React, { useEffect, useRef } from "react";
 
 const IMPACT_RANGE = 200;
-const FRAME_SIZE = 40; // px spacing between items
+const FRAME_SIZE = 40;
 
-const ICON_MAP: Record<string, { glyph: string; weight: number }> = {
-  circle: { glyph: "\uf111", weight: 900 },
-  ring: { glyph: "\uf111", weight: 400 },
-  star: { glyph: "\uf005", weight: 900 },
-  heart: { glyph: "\uf004", weight: 900 },
-  plus: { glyph: "\uf067", weight: 900 },
+// Draw functions for our supported shapes
+const drawCircle = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  radius: number,
+  color: string,
+) => {
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+};
+
+const drawPlus = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  size: number,
+  color: string,
+) => {
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  // Horizontal line
+  ctx.moveTo(x - size, y);
+  ctx.lineTo(x + size, y);
+  // Vertical line
+  ctx.moveTo(x, y - size);
+  ctx.lineTo(x, y + size);
+  ctx.stroke();
 };
 
 type Props = {
   isInteractive?: boolean;
-  /** either pass a glyph like '\uf111' OR a friendly name like 'circle' */
-  icon?: string;
-  fontSize?: number;
-  accentCssVar?: string; // e.g. '--accent-1-rgb'
+  shape?: "circle" | "plus";
+  size?: number; // replaces fontSize
+  accentCssVar?: string;
 };
 
 export default function CanvasBackground({
   isInteractive = true,
-  icon,
-  fontSize = 14,
+  shape = "circle",
+  size = 4,
   accentCssVar = "--accent-1-rgb",
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const mouseRef = useRef<{ x: number; y: number } | null>(null);
-  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
-    let mounted = true;
-    const canvas = canvasRef.current!;
+    const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    let rafId: number;
+    let dots: { x: number; y: number }[] = [];
     const dpr = window.devicePixelRatio || 1;
 
-    // 🔑 Resize based on parent element
     const resize = () => {
-      if (!canvas.parentElement) return;
-      const { width: w, height: h } = canvas.parentElement.getBoundingClientRect();
-
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      canvas.width = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
+      const parent = canvas.parentElement;
+      if (!parent) return;
+      const { width, height } = parent.getBoundingClientRect();
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
 
-    // 🔑 Compute grid positions based on parent
-    const computeDots = () => {
-      if (!canvas.parentElement) return [];
-      const { width: w, height: h } = canvas.parentElement.getBoundingClientRect();
-      const cols = Math.floor(w / FRAME_SIZE);
-      const rows = Math.floor(h / FRAME_SIZE);
-
-      const arr: { x: number; y: number }[] = [];
+      const cols = Math.floor(width / FRAME_SIZE);
+      const rows = Math.floor(height / FRAME_SIZE);
+      dots = [];
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-          arr.push({
+          dots.push({
             x: c * FRAME_SIZE + FRAME_SIZE / 2,
             y: r * FRAME_SIZE + FRAME_SIZE / 2,
           });
         }
       }
-      return arr;
     };
 
-    resize();
-    let dots = computeDots();
-
-    // glyph mapping
-    const entry = icon ? ICON_MAP[icon] : null;
-    const glyph = entry?.glyph ?? icon ?? null;
-    const fontWeight = entry?.weight ?? 900;
-
-    // accent color
-    const rawAccent = getComputedStyle(document.documentElement)
-      .getPropertyValue(accentCssVar)
-      .trim();
-    const accentRgb = rawAccent ? rawAccent.replace(/;$/, "") : "128,0,128";
-
-    // ensure font loaded
-    const ensureFontLoaded = async (): Promise<boolean> => {
-      // always return a boolean
-      if (!glyph) return false;
-
-      try {
-        await document.fonts.load(`${fontWeight} ${fontSize}px "Font Awesome 6 Free"`);
-        return document.fonts.check(`${fontWeight} ${fontSize}px "Font Awesome 6 Free"`);
-      } catch (err) {
-        return false;
-      }
-    };
-
-    let fontReadyPromise: Promise<boolean> | null = glyph
-      ? ensureFontLoaded()
-      : null;
-
-    // draw loop
-    const draw = async () => {
-      if (!mounted) return;
-      if (fontReadyPromise) {
-        await fontReadyPromise;
-        fontReadyPromise = null;
-      }
-
+    const draw = () => {
       ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 
-      for (let i = 0; i < dots.length; i++) {
-        const { x, y } = dots[i];
+      const accentRgb =
+        getComputedStyle(document.documentElement)
+          .getPropertyValue(accentCssVar)
+          .trim() || "128,0,128";
+
+      dots.forEach(({ x, y }) => {
         let scale = 1;
         let alpha = 0.2;
 
@@ -122,65 +103,47 @@ export default function CanvasBackground({
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < IMPACT_RANGE) {
             const t = dist / IMPACT_RANGE;
-            scale = 1 + (.5 - t);
+            scale = 1 + (0.5 - t);
             alpha = Math.max(0.2, 1 - t);
           }
         }
 
         const color = `rgba(${accentRgb}, ${alpha})`;
+        const currentSize = size * scale;
 
-        if (glyph) {
-          ctx.save();
-          ctx.font = `${fontWeight} ${fontSize * scale}px "Font Awesome 6 Free"`;
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillStyle = color;
-          ctx.fillText(glyph, x, y);
-          ctx.restore();
+        // Execute drawing logic
+        if (shape === "plus") {
+          drawPlus(ctx, x, y, currentSize * 0.5, color);
         } else {
-          ctx.beginPath();
-          ctx.arc(x, y, 4 * scale, 0, Math.PI * 2);
-          ctx.fillStyle = color;
-          ctx.fill();
+          drawCircle(ctx, x, y, currentSize * 0.5, color);
         }
-      }
+      });
 
-      rafRef.current = requestAnimationFrame(draw);
+      rafId = requestAnimationFrame(draw);
     };
 
-    rafRef.current = requestAnimationFrame(draw);
+    resize();
+    window.addEventListener("resize", resize);
 
-    // events
+    // Mouse listeners
     const handleMove = (e: MouseEvent) => {
-      if (!isInteractive) return;
-      mouseRef.current = { x: e.clientX, y: e.clientY };
+      if (isInteractive) mouseRef.current = { x: e.clientX, y: e.clientY };
     };
-
     const handleLeave = () => {
       mouseRef.current = null;
     };
-
-    // 🔑 Use ResizeObserver instead of window.resize
-    const resizeObserver = new ResizeObserver(() => {
-      resize();
-      dots = computeDots();
-    });
-    if (canvas.parentElement) {
-      resizeObserver.observe(canvas.parentElement);
-    }
-
     window.addEventListener("mousemove", handleMove);
     window.addEventListener("mouseleave", handleLeave);
 
-    // cleanup
+    rafId = requestAnimationFrame(draw);
+
     return () => {
-      mounted = false;
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMove);
       window.removeEventListener("mouseleave", handleLeave);
-      resizeObserver.disconnect();
     };
-  }, [isInteractive, icon, fontSize, accentCssVar]);
+  }, [isInteractive, shape, size, accentCssVar]);
 
   return (
     <canvas
@@ -190,7 +153,6 @@ export default function CanvasBackground({
         inset: 0,
         width: "100%",
         height: "100%",
-        display: "block",
         zIndex: -1,
       }}
     />

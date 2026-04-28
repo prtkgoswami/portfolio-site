@@ -10,46 +10,72 @@ type ProjectCardProps = {
 };
 
 const ProjectCard = ({ project }: ProjectCardProps): ReactElement => {
-  const { title, desc, image, liveLink, repoLink, techStack, category } = project;
+  const { title, desc, image, liveLink, repoLink, techStack, category } =
+    project;
+
   return (
-    <div className="project-card">
-      <a href={liveLink} target="_blank">
+    <article className="project-card">
+      <a
+        href={liveLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`View live demo of ${title}`}
+      >
         <div className="project-image">
-          {image && <Image src={urlFor(image).url()} alt={image?.alt ?? "Project Screenshot"} fill />}
+          {image && (
+            <Image
+              src={urlFor(image).url()}
+              alt={image?.alt ?? `Screenshot of ${title}`}
+              fill
+            />
+          )}
         </div>
       </a>
+
       <div className="project-details">
-        <div className="project-name">{title}</div>
-        <div className="project-desc">{desc}</div>
+        <h3 className="project-name">{title}</h3>
+        <p className="project-desc">{desc}</p>
+
         <div className="project-tech-wrapper">
-          <p>tech stack</p>
-          <div className="project-tech-list">
+          <p>Tech Stack</p>
+          <ul className="project-tech-list">
             {techStack.map((item) => (
-              <div className="project-tech-item" key={`tech-${item}`}>
+              <li className="project-tech-item" key={`tech-${item}`}>
                 {item}
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
-        <div className="project-footer">
+
+        <footer className="project-footer">
           <div className="project-category">{category}</div>
           <div className="project-links">
             {repoLink && (
-              <a href={repoLink} target="_blank">
+              <a
+                href={repoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View source code of ${title} on GitHub`}
+              >
                 <div className="project-link-src">
                   <FontAwesomeIcon icon={faGithub} size="xl" />
                 </div>
               </a>
             )}
             {liveLink && (
-              <a href={liveLink} target="_blank">
+              <a
+                href={liveLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View live demo of ${title}`}
+              >
                 <div className="project-link-live">live</div>
               </a>
             )}
           </div>
-        </div>
+        </footer>
       </div>
-    </div>
+    </article>
   );
 };
 

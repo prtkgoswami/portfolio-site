@@ -14,6 +14,11 @@
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
+  height: 100%;
+  transition: transform 150ms ease-in-out;
+}
+.project-card:hover {
+  transform: scale(1.02);
 }
 .project-image {
   width: 100%;
@@ -86,7 +91,7 @@
   font-weight: 600;
   text-transform: uppercase;
   color: rgb(var(--foreground-rgb));
-  background-color: rgba(var(--background-rgb), 0.8);
+  background-color: rgba(var(--accent-2-rgb), 0.8);
   border-radius: 5px;
   user-select: none;
 }
@@ -145,6 +150,12 @@
 @media only screen and (max-width: 768px) {
   .projects-container {
     margin-top: 20px;
+  }
+  .projects-container > li {
+    width: 100%;
+  }
+  .project-card {
+    width: 100%;
   }
   .repo-container {
     margin-top: 30px;

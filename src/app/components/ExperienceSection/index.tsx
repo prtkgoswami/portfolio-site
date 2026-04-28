@@ -1,9 +1,9 @@
 import {
-  faChevronDown,
+  faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import "./index.css";
 import { Experience } from "@sanity/types";
 
@@ -16,137 +16,107 @@ type ExperienceSectionProps = {
 const ExperienceSection = ({
   refCallback,
   workExpList,
-  educationList
+  educationList,
 }: ExperienceSectionProps): ReactElement => {
   const [activeCategory, setActiveCategory] = useState("work");
-  const [expandedIndex, setExpandedIndex] = useState(-1);
-  const [contentList, setContentList] = useState(workExpList);
-
-  const handleExpClick = (event: any, index: number) => {
-    const isExpanded = index === expandedIndex;
-
-    if (isExpanded) {
-      setExpandedIndex(-1);
-    } else {
-      setExpandedIndex(index);
-    }
-  };
 
   const handleCategoryChange = (category: string) => {
-    if (expandedIndex > -1) {
-      setExpandedIndex(-1);
-      setTimeout(() => {
-        setActiveCategory(category);
-      }, 400);
-    } else {
-      setActiveCategory(category);
-    }
+    setActiveCategory(category);
   };
-
-  // @ts-ignore react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (activeCategory === "work") {
-      setContentList(workExpList);
-    } else {
-      setContentList(educationList);
-    }
-  }, [activeCategory]);
 
   return (
     <section id="experience-section" className="pages" ref={refCallback}>
       <div className="section-content">
-        <div className="section-title">
-          <p
-            className={`${activeCategory === "work" ? "" : "inactive"}`}
-            onClick={() => handleCategoryChange("work")}
-          >
-            experience
-          </p>
-          <div className="seperator" />
-          <p
-            className={`${activeCategory === "edu" ? "" : "inactive"}`}
-            onClick={() => handleCategoryChange("edu")}
-          >
-            education
-          </p>
-        </div>
+        <h2 className="section-title">Experience & Education</h2>
 
-        <div id="content-wrapper">
-          <div id="content-container">
-            {contentList.map((content, contentIndex) => (
-              <div
-                key={`content-${contentIndex}`}
-                className="content-block"
-                onClick={(event) => {
-                  handleExpClick(event, contentIndex);
-                }}
-              >
-                <div className="content-banner">
-                  <div className="content-banner-text-wrapper">
-                    <div className="content-banner-title">
-                      <div>{content.organization}</div>
-                      <div>{content.position}</div>
-                    </div>
-                    <div className="content-banner-duration">
-                      <div>From: {new Date(content.from).getFullYear()}</div>
-                      <div>
-                        To: {content.isCurrent ?
-                          "Present" :
-                          <>{content.to ? new Date(content.to).getFullYear() : ""}</>
-                        }
-                      </div>
-                    </div>
-                  </div>
-                  <div className="content-banner-expand-btn">
-                    <div
-                      className={`content-banner-expand-icon ${expandedIndex === contentIndex
-                          ? "minus-icon"
-                          : "plus-icon"
-                        }`}
-                    >
-                      <div className="h-bar">
-                        <div className="v-bar"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <button
+          type="button"
+          className={`section-switch-btn btn-left ${activeCategory === "work" ? "hide" : ""}`}
+          onClick={() => handleCategoryChange("work")}
+        >
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </button>
 
-                <div className="content-banner-mobile-expand-btn">
-                  <FontAwesomeIcon
-                    icon={faChevronDown}
-                    className={`${expandedIndex === contentIndex
-                        ? "content-banner-mobile-minimize-icon"
-                        : "content-banner-mobile-maximize-icon"
-                      }`}
-                  />
-                </div>
+        <button
+          type="button"
+          className={`section-switch-btn btn-right ${activeCategory === "edu" ? "hide" : ""}`}
+          onClick={() => handleCategoryChange("edu")}
+        >
+          <FontAwesomeIcon icon={faChevronRight} />
+        </button>
 
-                <div
-                  className="content-item-content"
-                  style={
-                    expandedIndex === contentIndex
-                      ? { maxHeight: "2000px" }
-                      : { maxHeight: "0" }
-                  }
+        <div
+          id="content-wrapper"
+          style={{
+            transform: `translateX(${activeCategory === "work" ? "0" : "-21rem"})`,
+          }}
+        >
+          {[
+            ["Experience", workExpList],
+            ["Education", educationList],
+          ].map(([label, contentList]) => (
+            <div key={`${label}`} className="content-container">
+              <h3>{label as string}</h3>
+              {(contentList as Experience[]).map((content, contentIndex) => (
+                /* SEO FIX: Wrap each entry in an <article> for semantic correctness */
+                <article
+                  key={`content-${content.organization}-${content.position}`}
+                  className="content-block"
                 >
-                  <div className="content-item-desc">
-                    <ul className="content-item-responsibilities">
-                      {content.desc && content.desc.map(
-                        (responsibility, respIndex) => (
-                          <li key={`content-responsibility-${respIndex}`}>
-                            <p>
-                              <FontAwesomeIcon icon={faChevronRight} />
-                            </p>
-                            <p>{responsibility}</p>
-                          </li>
-                        )
-                      )}
-                    </ul>
+                  {/* SEO FIX: Use <header> to define the entity being described */}
+                  <header className="content-banner">
+                    <div className="content-banner-text-wrapper">
+                      <div className="content-banner-title">
+                        <h3>{content.organization}</h3>
+                        <p>{content.position}</p>
+                      </div>
+                      <div className="content-banner-duration">
+                        <time dateTime={new Date(content.from).toISOString()}>
+                          <span className="duration-label">FROM:</span>
+                          {new Date(content.from).getFullYear()}
+                        </time>
+                        <time
+                          dateTime={
+                            content.isCurrent
+                              ? new Date().toISOString()
+                              : content.to
+                                ? new Date(content.to).toISOString()
+                                : ""
+                          }
+                        >
+                          <span className="duration-label">TO:</span>
+                          {content.isCurrent
+                            ? "Present"
+                            : content.to
+                              ? new Date(content.to).getFullYear()
+                              : ""}
+                        </time>
+                      </div>
+                    </div>
+                  </header>
+
+                  <div className="content-item-content">
+                    <div className="content-item-desc">
+                      <ul className="content-item-responsibilities">
+                        {content.desc &&
+                          content.desc.map((responsibility, respIndex) => (
+                            <li key={`content-responsibility-${respIndex}`}>
+                              <p>
+                                <FontAwesomeIcon icon={faChevronRight} />
+                              </p>
+                              <p>{responsibility}</p>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                  {contentIndex < contentList.length - 1 && (
+                    <div className="content-block-seperator"></div>
+                  )}
+                </article>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </section>

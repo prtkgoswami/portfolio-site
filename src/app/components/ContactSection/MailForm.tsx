@@ -26,8 +26,8 @@ const MailForm = ({}): ReactElement => {
     formState: { errors, isValid },
     handleSubmit,
     reset,
-    watch
-  } = useForm<FormData>({mode: "onBlur"});
+    watch,
+  } = useForm<FormData>({ mode: "onBlur" });
   const [mailSentStatus, setMailSentStatus] = useState(MailState.unsent);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,8 +39,7 @@ const MailForm = ({}): ReactElement => {
       return;
     }
 
-    if (data.honey)
-      return;
+    if (data.honey) return;
 
     setIsLoading(true);
     fetch("/api/sendMail", {
@@ -52,7 +51,7 @@ const MailForm = ({}): ReactElement => {
         name: data.name.trim(),
         email: data.email.trim(),
         message: data.message.trim(),
-        turnstileToken: token
+        turnstileToken: token,
       }),
     }).then((data) => {
       data.json().then((resp) => {
@@ -163,6 +162,7 @@ const MailForm = ({}): ReactElement => {
           id="send-btn"
           className={mailSentStatus === MailState.successful ? "sent" : ""}
           disabled={!isValid || !token || isLoading}
+          aria-label="Send contact message"
         >
           {isLoading ? (
             <FontAwesomeIcon icon={faSpinner} spin size="2x" />

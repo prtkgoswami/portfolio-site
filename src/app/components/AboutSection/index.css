@@ -1,6 +1,6 @@
 #about-section {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
 }
 #about-section .section-content {
@@ -12,14 +12,23 @@
 
 #welcome-wrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+#about-section-title {
+  width: 80%;
+  text-align: left;
+  font-family: var(--font-montserrat);
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 10px 0 30px 0;
+  text-transform: uppercase;
 }
 #welcome {
   width: 80%;
   /* text-align: justify; */
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   line-height: 1.9;
 }
 

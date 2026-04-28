@@ -15,7 +15,7 @@ export interface SanityFile {
 
 export interface SiteConfig {
   title: string;
-  subTitle?: string | null;
+  subTitle?: string;
   about?: {
     text: string;
   };
@@ -47,14 +47,13 @@ export interface Experience {
 }
 
 export interface Skill {
-  title: string;      // e.g. "Frontend", "Backend"
-  skills: string[];   // e.g. ["HTML", "CSS", "JavaScript"]
+  title: string; // e.g. "Frontend", "Backend"
+  skills: string[]; // e.g. ["HTML", "CSS", "JavaScript"]
 }
-
 
 export interface Social {
   title: string; // e.g. "Github"
-  url: string;   // external link
+  url: string; // external link
 }
 
 export interface Rule {
@@ -64,4 +63,3 @@ export interface Rule {
   regex(pattern: RegExp, options?: { name?: string; invert?: boolean }): Rule;
   custom<T>(fn: (value: T) => true | string): Rule;
 }
-
