@@ -1,33 +1,42 @@
-#intro-section {
+#hero-section {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
 }
-#intro-section .section-content {
+#hero-section .section-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   row-gap: 10px;
 }
 
-#name {
+#details-wrapper {
   display: flex;
   flex-direction: column;
   text-align: center;
   position: relative;
   z-index: 2;
-  background-color: rgba(var(--background-rgb), 0.5);
-  padding: 0 2rem;
-}
-#name > p {
+  background-color: rgba(var(--background-rgb), 0.8);
+  padding: 0 2rem 1.8rem 2rem;
   font-family: var(--font-montserrat);
+  margin-bottom: 1rem;
+  border: 1px solid rgba(var(--accent-1-rgb), 0.1);
+}
+#details-wrapper > h1 {
   font-weight: 400;
-  font-size: 8rem;
+  font-size: 6rem;
   text-transform: uppercase;
   color: rgba(var(--foreground-rgb), 1);
   user-select: none;
+}
+#details-wrapper > h2 {
+  font-weight: 200;
+  font-size: 1.2rem;
+  color: rgba(var(--foreground-rgb), 1);
+  user-select: none;
+  line-height: 1.625;
 }
 
 #resume-button {
@@ -43,7 +52,9 @@
   background-color: rgba(var(--background-rgb), 0);
   backdrop-filter: blur(2px);
   border: 2px solid rgb(var(--accent-1-rgb));
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition:
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
   text-transform: uppercase;
 }
 #resume-button:hover {
@@ -55,8 +66,12 @@
   #intro-section .section-content {
     row-gap: 50px;
   }
-  #name > p {
+
+  #details-wrapper > h1 {
     font-size: 4rem;
+  }
+  #details-wrapper > h2 {
+    font-size: 0.8rem;
   }
 
   #resume-button {

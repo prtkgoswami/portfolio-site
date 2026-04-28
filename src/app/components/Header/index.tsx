@@ -14,7 +14,7 @@ type HeaderProps = {
 const Header = ({
   isTransparent = false,
   isMobile,
-  logo
+  logo,
 }: HeaderProps): ReactElement => {
   const [isLightMode, setIsLightMode] = useState(false);
 
@@ -38,15 +38,25 @@ const Header = ({
   };
 
   return (
-    <header className={`${isTransparent ? "transparent" : ""}`}>
-      {logo ?
+    <header
+      id="page-header"
+      className={`${isTransparent ? "transparent" : ""}`}
+    >
+      {logo ? (
         <div
           id="header-logo-container"
           onClick={() => handleNavClick("#intro-section")}
         >
-          <Image src={urlFor(logo).url()} height={50} width={50} alt={logo.alt ?? ''} />
-        </div> :
-        <div></div>}
+          <Image
+            src={urlFor(logo).url()}
+            height={50}
+            width={50}
+            alt={logo.alt ?? ""}
+          />
+        </div>
+      ) : (
+        <div></div>
+      )}
       <div id="header-actions">
         <Nav handleNavClick={handleNavClick} />
       </div>

@@ -1,5 +1,4 @@
-"use client"
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+"use client";
 import React, {
   ReactElement,
   useCallback,
@@ -13,7 +12,7 @@ import CustomBackground from "../CustomBackground";
 import ExperienceSection from "../ExperienceSection";
 import Footer from "../Footer";
 import Header from "../Header";
-import IntroSection from "../IntroSection";
+import HeroSection from "../HeroSection";
 import ShowcaseSection from "../ShowcaseSection";
 import "./index.css";
 import { Social, Experience, Project, SiteConfig, Skill } from "@/sanity/types";
@@ -25,16 +24,22 @@ type ContentData = {
   experiences: Experience[];
   skills: Skill[];
   socials: Social[];
-}
+};
 
 type WebsiteContentProps = {
   isMobile: boolean;
 } & ContentData;
 
-type WebsiteWrapperProps = ContentData
+type WebsiteWrapperProps = ContentData;
 
-
-const WebsiteContent = ({ isMobile, site, skills, projects, experiences, socials }: WebsiteContentProps): ReactElement => {
+const WebsiteContent = ({
+  isMobile,
+  site,
+  skills,
+  projects,
+  experiences,
+  socials,
+}: WebsiteContentProps): ReactElement => {
   const contentRef = useRef(null);
   const sectionsRef = useRef<any[]>([]);
   const [titleIntersectionRatio, setTitleIntersectionRatio] = useState(1);
@@ -61,7 +66,7 @@ const WebsiteContent = ({ isMobile, site, skills, projects, experiences, socials
     const observer = new IntersectionObserver(
       (entries) => {
         const sectionIds = sectionsRef.current.map((section: any) =>
-          section.getAttribute("id")
+          section.getAttribute("id"),
         );
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -80,7 +85,7 @@ const WebsiteContent = ({ isMobile, site, skills, projects, experiences, socials
           }
         });
       },
-      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] }
+      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] },
     );
     sectionsRef.current.forEach((section) => {
       observer.observe(section);
@@ -95,22 +100,29 @@ const WebsiteContent = ({ isMobile, site, skills, projects, experiences, socials
     window.scrollTo(0, 0);
   }, []);
 
-  const workExpList = experiences.filter(exp => exp.type === "experience")
-  const eduExpList = experiences.filter(exp => exp.type === "education")
+  const workExpList = experiences.filter((exp) => exp.type === "experience");
+  const eduExpList = experiences.filter((exp) => exp.type === "education");
 
   return (
     <>
       <div className="pages-wrapper">
         <Header isTransparent={isTransparentHeader} isMobile logo={site.logo} />
         <div id="site-content" ref={contentRef}>
-          <IntroSection isMobile siteData={site} />
-          <AboutSection refCallback={refCallback} aboutText={site.about?.text ?? ""} skillList={skills} />
-          <ExperienceSection refCallback={refCallback} workExpList={workExpList} educationList={eduExpList} />
+          <HeroSection isMobile siteData={site} />
+          <AboutSection
+            refCallback={refCallback}
+            aboutText={site.about?.text ?? ""}
+            skillList={skills}
+          />
+          <ExperienceSection
+            refCallback={refCallback}
+            workExpList={workExpList}
+            educationList={eduExpList}
+          />
           <ShowcaseSection refCallback={refCallback} projectList={projects} />
         </div>
         <div id="end-section">
-
-          <CustomBackground icon="plus" fontSize={18} isInteractive={false} />
+          <CustomBackground shape="plus" size={18} isInteractive={false} />
           <ContactSection refCallback={refCallback} socialData={socials} />
 
           <Footer isMobile={isMobile} footerText={site.footerText} />
@@ -118,11 +130,11 @@ const WebsiteContent = ({ isMobile, site, skills, projects, experiences, socials
       </div>
     </>
   );
-}
+};
 
 const WebsiteWrapper = (props: WebsiteWrapperProps): ReactElement => {
   const [isMobile, setIsMobile] = useState(false);
-  const [showLoader, setShowLoader] = useState(true);
+  const [showLoader, setShowLoader] = useState(false);
 
   // Create a function to update the screen width
   const updateScreenWidth = () => {
@@ -141,13 +153,17 @@ const WebsiteWrapper = (props: WebsiteWrapperProps): ReactElement => {
     };
   }, []);
 
-
   return (
-    <div style={{ overflowY: showLoader ? 'hidden' : 'auto', height: showLoader ? '100vh' : '100%' }}>
+    <div
+      style={{
+        overflowY: showLoader ? "hidden" : "auto",
+        height: showLoader ? "100vh" : "100%",
+      }}
+    >
       {showLoader && <WelcomeLoader onClose={() => setShowLoader(false)} />}
       <WebsiteContent isMobile={isMobile} {...props} />
     </div>
-  )
+  );
 };
 
 export default WebsiteWrapper;

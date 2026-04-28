@@ -1,6 +1,6 @@
 import MailForm from "./MailForm";
 import SocialMediaSection from "./SocialMediaSection";
-import {Social} from "@/sanity/types";
+import { Social } from "@/sanity/types";
 import "./index.css";
 
 type ContactSectionProps = {
@@ -8,21 +8,41 @@ type ContactSectionProps = {
   socialData: Social[];
 };
 
+const getContactsSchema = (socialData: Social[]) => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    mainEntity: {
+      "@type": "Person",
+      name: "Pratik Goswami",
+      jobTitle: "Frontend Software Engineer",
+      url: "https://www.pratikgoswami.dev/",
+      sameAs: socialData.map(({ url }) => url),
+    },
+  };
+};
+
 const ContactSection = ({
   refCallback,
-  socialData
+  socialData,
 }: ContactSectionProps): React.ReactElement => {
   return (
-    <div id="contact-section" className="pages" ref={refCallback}>
+    <section id="contact-section" className="pages" ref={refCallback}>
       <div className="section-content">
-        <div className="section-title">Let&apos;s Connect</div>
+        <h2 className="section-title">Let&apos;s Connect</h2>
         <div className="contacts-wrapper">
           <SocialMediaSection socialData={socialData} />
-          <div style={{marginBottom: '10px'}}></div>
           <MailForm />
         </div>
       </div>
-    </div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getContactsSchema(socialData)),
+        }}
+      />
+    </section>
   );
 };
 
