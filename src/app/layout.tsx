@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.pratikgoswami.dev"),
   title: {
-    default: "Pratik Goswami | Frontend Engineer | Ex-TikTok & IBM",
+    default: "Pratik Goswami | Frontend Engineer | Ex-TikTok & Ex-IBM",
     template: "%s | Pratik Goswami",
   },
   description:
@@ -55,12 +55,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        /> */}
-      </head>
+      <head></head>
       <body className={inter.className}>
         {children}
 
@@ -89,10 +84,18 @@ export default function RootLayout({
                 "https://www.linkedin.com/in/prtkgoswami",
                 "https://github.com/prtkgoswami",
               ],
-              worksFor: {
-                "@type": "Organization",
-                name: "Ex-TikTok, IBM",
-              },
+              worksFor: [
+                {
+                  "@type": "Organization",
+                  name: "TikTok",
+                  sameAs: "https://www.linkedin.com/company/tiktok/",
+                },
+                {
+                  "@type": "Organization",
+                  name: "IBM",
+                  sameAs: "https://www.linkedin.com/company/ibm/",
+                },
+              ],
               description:
                 "Frontend Engineer specializing in React, TypeScript, and scalable UI systems.",
             }),
