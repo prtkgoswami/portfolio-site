@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CustomBackground from "../CustomBackground";
 import { SiteConfig } from "@sanity/types";
 import { urlForFile } from "@sanity/lib/file";
+import { Tracker } from "../Tracker";
 import "./index.css";
 
 type HeroSectionProps = {
@@ -30,12 +31,14 @@ function HeroSection({ siteData, isMobile }: HeroSectionProps) {
         </div>
 
         {cvUrl && (
-          <a href={cvUrl} target="_blank" rel="noopener noreferrer">
-            <div id="resume-button">
-              <p>Curriculam Vitae</p>
-              <FontAwesomeIcon icon={faDownload} />
-            </div>
-          </a>
+          <Tracker action="resume_click">
+            <a href={cvUrl} target="_blank" rel="noopener noreferrer">
+              <div id="resume-button">
+                <p>Curriculam Vitae</p>
+                <FontAwesomeIcon icon={faDownload} />
+              </div>
+            </a>
+          </Tracker>
         )}
       </div>
     </section>

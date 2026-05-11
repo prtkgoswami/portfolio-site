@@ -120,7 +120,9 @@
   border: none;
 }
 .form-error-msg {
-  color: rgba(var(--accent-1-rgb));
+  padding: 2px 8px;
+  color: rgba(200, 140, 255);
+  background-color: rgba(var(--background-rgb));
   width: 100%;
   max-width: 50rem;
 }

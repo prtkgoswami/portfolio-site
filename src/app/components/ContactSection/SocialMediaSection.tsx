@@ -11,6 +11,7 @@ import {
   faMediumM,
 } from "@fortawesome/free-brands-svg-icons";
 import { Social } from "@/sanity/types";
+import { Tracker } from "../Tracker";
 import "./index.css";
 
 type SocialMediaSectionProps = {
@@ -35,17 +36,25 @@ const SocialMediaSection = ({
     <ul id="social-icon-container" style={{ listStyle: "none", padding: 0 }}>
       {socialData.map((item, idx) => (
         <li key={`social-${idx}`}>
-          <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer me"
-            aria-label={`Visit Pratik Goswami's ${item.title} profile`}
+          <Tracker
+            action="social_click"
+            params={{
+              event_category: "social_media",
+              event_label: item.title,
+            }}
           >
-            <div className="social-block">
-              <FontAwesomeIcon icon={SOCIAL_MAP[item.title.toLowerCase()]} />
-              <span className="social-title">{item.title}</span>
-            </div>
-          </a>
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer me"
+              aria-label={`Visit Pratik Goswami's ${item.title} profile`}
+            >
+              <div className="social-block">
+                <FontAwesomeIcon icon={SOCIAL_MAP[item.title.toLowerCase()]} />
+                <span className="social-title">{item.title}</span>
+              </div>
+            </a>
+          </Tracker>
         </li>
       ))}
     </ul>

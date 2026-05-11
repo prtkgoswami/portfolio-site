@@ -5,6 +5,7 @@ import ProjectCard from "./ProjectCard";
 import { client as sanityClient } from "@sanity/lib/client";
 import { Project } from "@sanity/types";
 import { PROJECTS_QUERY } from "@/sanity/queries";
+import { Tracker } from "../Tracker";
 import "./index.css";
 
 const getProjectsSchema = (projectList: Project[]) => {
@@ -49,18 +50,20 @@ async function ShowcaseSection() {
         </ul>
 
         <div className="repo-container">
-          <a
-            href={REPOSITORY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View all projects on GitHub"
-          >
-            <div className="repo-button">
-              <p>
-                Go To Repository <FontAwesomeIcon icon={faAnglesRight} />
-              </p>
-            </div>
-          </a>
+          <Tracker action="repo_site_click">
+            <a
+              href={REPOSITORY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View all projects on GitHub"
+            >
+              <div className="repo-button">
+                <p>
+                  Go To Repository <FontAwesomeIcon icon={faAnglesRight} />
+                </p>
+              </div>
+            </a>
+          </Tracker>
         </div>
       </div>
 

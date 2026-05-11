@@ -1,72 +1,79 @@
 "use client";
-
 import { useEffect, useRef } from "react";
+import { trackEvent } from "../../lib/gtag";
 
 const SECTIONS = [
-  "intro-section",
-  "about-section",
-  "experience-section",
-  "showcase-section",
-  "article-section",
-  "contact-section",
+  "intro",
+  "about",
+  "experience",
+  "projects",
+  "articles",
+  "contact",
 ];
 
-export default function SectionTracker({
-  measurementId,
-}: {
-  measurementId: string;
-}) {
-  const activeSection = useRef<string | null>(null);
-  const enterTime = useRef<number | null>(null);
+export default function SectionAnalytics() {
+  const sectionTimes = useRef<Map<string, number>>(new Map());
 
   useEffect(() => {
-    if (!measurementId) return;
-
-    const gtag = (window as any).gtag;
-
-    const sendSectionView = (sectionId: string) => {
-      gtag?.("event", "section_view", {
-        section: sectionId,
-      });
-    };
-
-    const sendTimeSpent = (sectionId: string, duration: number) => {
-      gtag?.("event", "section_time_spent", {
-        section: sectionId,
-        duration_seconds: Math.round(duration / 1000),
-      });
+    // Helper to calculate and send time
+    const sendTimeSpent = (id: string) => {
+      const startTime = sectionTimes.current.get(id);
+      if (startTime) {
+        const duration = Math.round((Date.now() - startTime) / 1000);
+        if (duration > 0) {
+          trackEvent("section_dwell", {
+            event_category: "engagement",
+            event_label: id.replace("-section", ""), // Clean name for reports
+            value: duration,
+          });
+        }
+        sectionTimes.current.delete(id);
+      }
     };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const sectionId = entry.target.id;
+          const id = entry.target.id;
 
           if (entry.isIntersecting) {
-            // User entered a section
-            activeSection.current = sectionId;
-            enterTime.current = Date.now();
-            sendSectionView(sectionId);
-          } else if (activeSection.current === sectionId && enterTime.current) {
-            // User left the section → calculate time spent
-            const duration = Date.now() - enterTime.current;
-            sendTimeSpent(sectionId, duration);
-            activeSection.current = null;
-            enterTime.current = null;
+            sectionTimes.current.set(id, Date.now());
+
+            // Requirement 1: Track "Scrolled to End"
+            if (id === "contact-section") {
+              trackEvent("scroll_to_end", {
+                event_category: "engagement",
+                event_label: "Footer Reached",
+              });
+            }
+          } else {
+            // User left the section
+            sendTimeSpent(id);
           }
         });
       },
-      { threshold: 0.5 }, // Trigger when 50% of a section is visible
+      { threshold: 0.3 },
     );
 
     SECTIONS.forEach((id) => {
-      const el = document.getElementById(id);
+      const el = document.getElementById(`${id}-section`);
       if (el) observer.observe(el);
     });
 
-    // Cleanup
-    return () => observer.disconnect();
-  }, [measurementId]);
+    // Handle Tab Close / Navigation away
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        sectionTimes.current.forEach((_, id) => sendTimeSpent(id));
+      }
+    };
+
+    window.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   return null;
 }

@@ -65,7 +65,6 @@ export default function RootLayout({
               measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
             />
             <SectionAnalyics
-              measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
             />
           </>
         )}
