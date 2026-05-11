@@ -1,140 +1,17 @@
 "use client";
-import React, {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import AboutSection from "../AboutSection";
-import ContactSection from "../ContactSection";
-import CustomBackground from "../CustomBackground";
-import ExperienceSection from "../ExperienceSection";
+import React, { ReactNode, useEffect, useState } from "react";
 import Footer from "../Footer";
 import Header from "../Header";
-import HeroSection from "../HeroSection";
-import ShowcaseSection from "../ShowcaseSection";
+import { SiteConfig } from "@/sanity/types";
 import "./index.css";
-import { Social, Experience, Project, SiteConfig, Skill } from "@/sanity/types";
-import WelcomeLoader from "./WelcomeLoader";
 
-type ContentData = {
+type WebsiteWrapperProps = {
   site: SiteConfig;
-  projects: Project[];
-  experiences: Experience[];
-  skills: Skill[];
-  socials: Social[];
+  children: ReactNode;
 };
 
-type WebsiteContentProps = {
-  isMobile: boolean;
-} & ContentData;
-
-type WebsiteWrapperProps = ContentData;
-
-const WebsiteContent = ({
-  isMobile,
-  site,
-  skills,
-  projects,
-  experiences,
-  socials,
-}: WebsiteContentProps): ReactElement => {
-  const contentRef = useRef(null);
-  const sectionsRef = useRef<any[]>([]);
-  const [titleIntersectionRatio, setTitleIntersectionRatio] = useState(1);
-  const [isTransparentHeader, setIsTransparentHeader] = useState(false);
-
-  const updateDimensions = () => {
-    const titlePage = document.querySelector("#intro-section");
-
-    if (titlePage) {
-      (titlePage as HTMLElement).style.minHeight = window.innerHeight + "px";
-    }
-  };
-
-  const refCallback = useCallback((element: any) => {
-    if (element) {
-      sectionsRef.current.push(element);
-    }
-  }, []);
-
-  useEffect(() => {
-    updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const sectionIds = sectionsRef.current.map((section: any) =>
-          section.getAttribute("id"),
-        );
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const sectionId = entry.target.getAttribute("id");
-            const sectionIndex = sectionIds.indexOf(sectionId);
-
-            if (sectionId !== "intro-section") {
-              if (sectionIndex % 2 === 0) {
-                entry.target.classList.add("fadeInLeft");
-              } else {
-                entry.target.classList.add("fadeInRight");
-              }
-            } else {
-              setTitleIntersectionRatio(entry.intersectionRatio);
-            }
-          }
-        });
-      },
-      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] },
-    );
-    sectionsRef.current.forEach((section) => {
-      observer.observe(section);
-    });
-
-    return () => {
-      window.removeEventListener("resize", updateDimensions);
-    };
-  }, []);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const workExpList = experiences.filter((exp) => exp.type === "experience");
-  const eduExpList = experiences.filter((exp) => exp.type === "education");
-
-  return (
-    <>
-      <div className="pages-wrapper">
-        <Header isTransparent={isTransparentHeader} isMobile logo={site.logo} />
-        <div id="site-content" ref={contentRef}>
-          <HeroSection isMobile siteData={site} />
-          <AboutSection
-            refCallback={refCallback}
-            aboutText={site.about?.text ?? ""}
-            skillList={skills}
-          />
-          <ExperienceSection
-            refCallback={refCallback}
-            workExpList={workExpList}
-            educationList={eduExpList}
-          />
-          <ShowcaseSection refCallback={refCallback} projectList={projects} />
-        </div>
-        <div id="end-section">
-          <CustomBackground shape="plus" size={18} isInteractive={false} />
-          <ContactSection refCallback={refCallback} socialData={socials} />
-
-          <Footer isMobile={isMobile} footerText={site.footerText} />
-        </div>
-      </div>
-    </>
-  );
-};
-
-const WebsiteWrapper = (props: WebsiteWrapperProps): ReactElement => {
+function WebsiteWrapper({ site, children }: WebsiteWrapperProps) {
   const [isMobile, setIsMobile] = useState(false);
-  const [showLoader, setShowLoader] = useState(false);
 
   // Create a function to update the screen width
   const updateScreenWidth = () => {
@@ -146,24 +23,37 @@ const WebsiteWrapper = (props: WebsiteWrapperProps): ReactElement => {
     window.addEventListener("resize", updateScreenWidth);
     updateScreenWidth();
 
-    // Clean up the event listener when the component unmounts
-    // Cleanup: Disconnect the observer when the component unmounts
     return () => {
       window.removeEventListener("resize", updateScreenWidth);
     };
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "instant",
+      });
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div
       style={{
-        overflowY: showLoader ? "hidden" : "auto",
-        height: showLoader ? "100vh" : "100%",
+        overflowY: "auto",
+        height: "100%",
       }}
     >
-      {showLoader && <WelcomeLoader onClose={() => setShowLoader(false)} />}
-      <WebsiteContent isMobile={isMobile} {...props} />
+      <div className="pages-wrapper">
+        <Header isMobile={isMobile} logo={site.logo} />
+        <div id="site-content">{children}</div>
+        <Footer footerText={site.footerText} />
+      </div>
     </div>
   );
-};
+}
 
 export default WebsiteWrapper;

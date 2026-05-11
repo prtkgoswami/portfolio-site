@@ -1,6 +1,5 @@
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactElement } from "react";
 import CustomBackground from "../CustomBackground";
 import { SiteConfig } from "@sanity/types";
 import { urlForFile } from "@sanity/lib/file";
@@ -11,15 +10,12 @@ type HeroSectionProps = {
   siteData: SiteConfig;
 };
 
-const HeroSection = ({
-  isMobile,
-  siteData,
-}: HeroSectionProps): ReactElement => {
+function HeroSection({ siteData, isMobile }: HeroSectionProps) {
   const cvUrl = siteData.cv ? urlForFile(siteData.cv) : null;
 
   return (
     <section id="hero-section">
-      <CustomBackground isInteractive={isMobile} shape="circle" size={16} />
+      <CustomBackground />
       <div className="section-content">
         <div id="details-wrapper">
           {siteData.title ? <h1>{siteData.title}</h1> : <h1>Pratik Goswami</h1>}
@@ -44,6 +40,6 @@ const HeroSection = ({
       </div>
     </section>
   );
-};
+}
 
 export default HeroSection;

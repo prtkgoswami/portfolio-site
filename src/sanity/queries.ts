@@ -47,6 +47,17 @@ export const SKILLS_QUERY = groq`
   }
 `;
 
+// Articles
+export const ARTICLES_QUERY = groq`
+  *[_type=="article"] | order(_createdAt desc) {
+    _id,
+    title,
+    postedOn,
+    description,
+    links
+  }
+`;
+
 // Contacts
 export const CONTACTS_QUERY = groq`
   *[_type=="contact"] | order(order asc) {

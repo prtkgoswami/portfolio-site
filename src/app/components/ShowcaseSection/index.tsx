@@ -1,15 +1,11 @@
 import { REPOSITORY_URL } from "@/app/common/const";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactElement } from "react";
 import ProjectCard from "./ProjectCard";
-import "./index.css";
+import { client as sanityClient } from "@sanity/lib/client";
 import { Project } from "@sanity/types";
-
-type ShowcaseSectionProps = {
-  refCallback: any;
-  projectList: Project[];
-};
+import { PROJECTS_QUERY } from "@/sanity/queries";
+import "./index.css";
 
 const getProjectsSchema = (projectList: Project[]) => {
   return {
@@ -36,12 +32,11 @@ const getProjectsSchema = (projectList: Project[]) => {
   };
 };
 
-const ShowcaseSection = ({
-  refCallback,
-  projectList,
-}: ShowcaseSectionProps): ReactElement => {
+async function ShowcaseSection() {
+  const projectList: Project[] = await sanityClient.fetch(PROJECTS_QUERY);
+
   return (
-    <section id="showcase-section" className="pages" ref={refCallback}>
+    <section id="showcase-section" className="pages">
       <div className="section-content">
         <h2 className="section-title">Projects</h2>
 
@@ -77,6 +72,6 @@ const ShowcaseSection = ({
       />
     </section>
   );
-};
+}
 
 export default ShowcaseSection;

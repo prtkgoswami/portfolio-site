@@ -1,99 +1,97 @@
+"use client";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Image from "next/image";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import "./index.css";
 
 const NavItems = [
-  {
-    label: "about",
-    route: "#about-section",
-  },
-  {
-    label: "experience",
-    route: "#experience-section",
-  },
-  {
-    label: "showcase",
-    route: "#showcase-section",
-  },
-  {
-    label: "contact",
-    route: "#contact-section",
-  },
+  { label: "about", route: "#about-section" },
+  { label: "experience", route: "#experience-section" },
+  { label: "showcase", route: "#showcase-section" },
+  { label: "articles", route: "#article-section" },
+  { label: "contact", route: "#contact-section" },
 ];
 
 type NavProps = {
-  handleNavClick: (route: string) => void;
+  handleNavClick: (e: React.MouseEvent, route: string) => void;
 };
 
 const Nav = ({ handleNavClick }: NavProps): ReactElement => {
   const [isMobileMenuExpanded, setIsMobileMenuExpanded] = useState(false);
 
-  return (
-    <nav>
-      <div id="nav-landscape">
-        {NavItems.map((item, index) => (
-          <div
-            className="nav-item"
-            key={`nav-item-${item.label}`}
-            onClick={() => {
-              handleNavClick(item.route);
-            }}
-          >
-            {item.label}
-          </div>
-        ))}
-      </div>
+  useEffect(() => {
+    if (isMobileMenuExpanded) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
 
+    // Cleanup: very important if the user navigates away while the menu is open
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuExpanded]);
+
+  return (
+    <nav aria-label="Main Navigation">
+      {/* Desktop Navigation */}
+      <ul id="nav-landscape" style={{ listStyle: "none" }}>
+        {NavItems.map((item) => (
+          <li key={`nav-item-${item.label}`}>
+            <a
+              href={item.route}
+              className="nav-item"
+              onClick={(e) => handleNavClick(e, item.route)}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {/* Mobile Navigation */}
       <div id="nav-mobile">
-        <div
+        <button
           id="nav-expand-button"
+          aria-expanded={isMobileMenuExpanded}
+          aria-controls="mobile-nav-container"
+          aria-label="Toggle menu"
           className={`${isMobileMenuExpanded ? "close" : ""}`}
-          onClick={() => setIsMobileMenuExpanded(!isMobileMenuExpanded)}
+          onClick={() => setIsMobileMenuExpanded((prev) => !prev)}
         >
-          <FontAwesomeIcon icon={faBars} />
-        </div>
+          <FontAwesomeIcon icon={isMobileMenuExpanded ? faXmark : faBars} />
+        </button>
 
         {isMobileMenuExpanded && (
-          <div id="mobile-nav-container">
+          <div id="mobile-nav-container" role="dialog" aria-modal="true">
             <div id="mobile-nav-wrapper">
               <div id="mobile-nav-header">
-                <div
-                  id="mobile-nav-header-logo-container"
-                  onClick={() => {
-                    handleNavClick("#intro-section");
-                    setIsMobileMenuExpanded(false);
-                  }}
-                >
-                  <Image
-                    src="/imgs/web_logo.png"
-                    height={50}
-                    width={50}
-                    alt="logo"
-                  />
-                </div>
-
-                <div
-                  id="mobile-nav-header-close-button"
+                <button
+                  id="mobile-nav-close-button"
+                  aria-controls="mobile-nav-container"
+                  aria-label="Close menu"
                   onClick={() => setIsMobileMenuExpanded(false)}
                 >
-                  <FontAwesomeIcon icon={faXmark} />
-                </div>
+                  <FontAwesomeIcon icon={faXmark}/>
+                </button>
               </div>
               <div id="mobile-nav-body">
-                {NavItems.map((item, index) => (
-                  <div
-                    className="nav-item"
-                    key={`nav-item-${item.label}`}
-                    onClick={() => {
-                      handleNavClick(item.route);
-                      setIsMobileMenuExpanded(false);
-                    }}
-                  >
-                    {item.label}
-                  </div>
-                ))}
+                <ul style={{ listStyle: "none" }}>
+                  {NavItems.map((item) => (
+                    <li key={`mobile-nav-item-${item.label}`}>
+                      <a
+                        href={item.route}
+                        className="nav-item"
+                        onClick={(e) => {
+                          handleNavClick(e, item.route);
+                          setIsMobileMenuExpanded(false);
+                        }}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>

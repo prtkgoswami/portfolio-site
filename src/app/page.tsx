@@ -1,7 +1,27 @@
+import React from "react";
 import { Montserrat } from "next/font/google";
 import WebsiteWrapper from "./components/WebsiteWrapper";
-import {client as sanityClient} from '@sanity/lib/client'
-import { CONTACTS_QUERY, EXPERIENCE_QUERY, PROJECTS_QUERY, SITE_QUERY, SKILLS_QUERY } from "@/sanity/queries";
+import { client as sanityClient } from "@sanity/lib/client";
+import { SITE_QUERY } from "@/sanity/queries";
+import { SiteConfig } from "@/sanity/types";
+import dynamic from "next/dynamic";
+
+import HeroSection from "./components/HeroSection";
+const AboutSection = dynamic(() => import("./components/AboutSection"), {
+  loading: () => <p>Loading Skills...</p>,
+});
+const ExperienceSection = dynamic(() => import("./components/ExperienceSection"), {
+  loading: () => <p>Loading Experience...</p>,
+});
+const ShowcaseSection = dynamic(() => import("./components/ShowcaseSection"), {
+  loading: () => <p>Loading Projects...</p>,
+});
+const ArticleSection = dynamic(() => import("./components/ArticleSection"), {
+  loading: () => <p>Loading Articles...</p>,
+});
+const ContactSection = dynamic(() => import("./components/ContactSection"), {
+  loading: () => <p>Loading Socials...</p>,
+});
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -11,17 +31,20 @@ const montserrat = Montserrat({
 export const revalidate = 3600;
 
 export default async function Home() {
-  const [site, projects, experiences, skills, socials] = await Promise.all([
-    sanityClient.fetch(SITE_QUERY),
-    sanityClient.fetch(PROJECTS_QUERY),
-    sanityClient.fetch(EXPERIENCE_QUERY),
-    sanityClient.fetch(SKILLS_QUERY),
-    sanityClient.fetch(CONTACTS_QUERY),
-  ]);
+  const site: SiteConfig = await sanityClient.fetch(SITE_QUERY);
 
   return (
     <main className={montserrat.variable}>
-      <WebsiteWrapper site={site} projects={projects} experiences={experiences} skills={skills} socials={socials} />
+      <WebsiteWrapper site={site}>
+        <HeroSection isMobile={false} siteData={site} />
+        <AboutSection aboutText={site.about?.text ?? ""} />
+        <ExperienceSection />
+        <ShowcaseSection />
+        <ArticleSection />
+        <div id="end-section">
+          <ContactSection />
+        </div>
+      </WebsiteWrapper>
     </main>
   );
 }

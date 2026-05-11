@@ -4,6 +4,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: radial-gradient(
+    circle at 50% 100%, 
+    rgb(var(--accent-1-rgb)) 0%,    /* Lighter center blue */
+    rgb(var(--background-rgb)) 84%   /* Deep near-black edges */
+  );
 }
 #contact-section .section-content {
   display: flex;
@@ -55,16 +60,16 @@
   font-size: 5rem;
   transition: all 0.2s ease-in-out;
   position: relative;
-  background-color: rgba(var(--background-rgb), 0);
+  background-color: rgba(26, 26, 26, 0.8);
   backdrop-filter: blur(2px);
   z-index: 1;
-  border: 2px solid rgba(var(--foreground-rgb), 0.2);
+  border: 2px solid rgba(26, 26, 26, 0.2);
   padding: 22px 0;
 }
 .social-title {
   font-size: 1rem;
   text-align: center;
-  color: rgb(var(--background-rgb));
+  color: transparent;
   /* display: none; */
 }
 .social-block:hover {

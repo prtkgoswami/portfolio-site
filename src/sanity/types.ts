@@ -56,6 +56,19 @@ export interface Social {
   url: string; // external link
 }
 
+export interface ArticleLink {
+  platform: string;
+  url: string;
+}
+
+export interface Article {
+  _id: string;
+  title: string;
+  postedOn: string;
+  description?: string;
+  links: ArticleLink[];
+}
+
 export interface Rule {
   required(): Rule;
   min(limit: number): Rule;

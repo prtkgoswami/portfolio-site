@@ -1,12 +1,9 @@
 import MailForm from "./MailForm";
 import SocialMediaSection from "./SocialMediaSection";
 import { Social } from "@/sanity/types";
+import { client as sanityClient } from "@sanity/lib/client";
+import { CONTACTS_QUERY } from "@/sanity/queries";
 import "./index.css";
-
-type ContactSectionProps = {
-  refCallback: any;
-  socialData: Social[];
-};
 
 const getContactsSchema = (socialData: Social[]) => {
   return {
@@ -22,12 +19,11 @@ const getContactsSchema = (socialData: Social[]) => {
   };
 };
 
-const ContactSection = ({
-  refCallback,
-  socialData,
-}: ContactSectionProps): React.ReactElement => {
+async function ContactSection() {
+  const socialData: Social[] = await sanityClient.fetch(CONTACTS_QUERY);
+
   return (
-    <section id="contact-section" className="pages" ref={refCallback}>
+    <section id="contact-section" className="pages">
       <div className="section-content">
         <h2 className="section-title">Let&apos;s Connect</h2>
         <div className="contacts-wrapper">
@@ -44,6 +40,6 @@ const ContactSection = ({
       />
     </section>
   );
-};
+}
 
 export default ContactSection;
