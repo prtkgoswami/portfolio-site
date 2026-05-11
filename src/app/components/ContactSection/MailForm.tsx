@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Turnstile from "react-turnstile";
+import { trackEvent } from "@/lib/gtag";
 import "./index.css";
 
 export type FormData = {
@@ -40,6 +41,8 @@ const MailForm = ({}): ReactElement => {
     }
 
     if (data.honey) return;
+
+    trackEvent("contact_email_form_submit")
 
     setIsLoading(true);
     fetch("/api/sendMail", {
