@@ -18,11 +18,12 @@
   text-align: center;
   position: relative;
   z-index: 2;
-  background-color: rgba(var(--background-rgb), 0.8);
+  background-color: rgba(var(--background-rgb), 0.05);
+  backdrop-filter: blur(1px);
   padding: 0 2rem 1.8rem 2rem;
   font-family: var(--font-montserrat);
   margin-bottom: 1rem;
-  border: 1px solid rgba(var(--accent-1-rgb), 0.1);
+  /* border: 1px solid rgba(var(--accent-1-rgb), 0.1); */
 }
 #details-wrapper > h1 {
   font-weight: 400;

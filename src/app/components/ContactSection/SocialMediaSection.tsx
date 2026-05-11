@@ -2,11 +2,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import {
   faCodepen,
+  faDev,
   faFacebook,
   faGithub,
   faInstagram,
   faItchIo,
   faLinkedinIn,
+  faMediumM,
 } from "@fortawesome/free-brands-svg-icons";
 import { Social } from "@/sanity/types";
 import "./index.css";
@@ -22,6 +24,8 @@ const SOCIAL_MAP: Record<string, IconDefinition> = {
   github: faGithub,
   codepen: faCodepen,
   "itch.io": faItchIo,
+  "dev.to": faDev,
+  medium: faMediumM,
 };
 
 const SocialMediaSection = ({

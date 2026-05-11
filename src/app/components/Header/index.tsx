@@ -1,28 +1,24 @@
 import Image from "next/image";
-import { ReactElement, useState } from "react";
+import { useState } from "react";
 import Nav from "./Nav";
-import "./index.css";
 import { SanityImage } from "@/sanity/types";
 import { urlFor } from "@/sanity/lib/image";
+import "./index.css";
 
 type HeaderProps = {
-  isTransparent: boolean;
   isMobile: boolean;
   logo?: SanityImage;
 };
 
-const Header = ({
-  isTransparent = false,
-  isMobile,
-  logo,
-}: HeaderProps): ReactElement => {
+function Header({ isMobile, logo }: HeaderProps) {
   const [isLightMode, setIsLightMode] = useState(false);
 
   const handleLightModeClick = () => {
     setIsLightMode(!isLightMode);
   };
 
-  const handleNavClick = (route: string): void => {
+  const handleNavClick = (e: React.MouseEvent, route: string): void => {
+    e.preventDefault();
     const target = document.querySelector(route);
     if (!target) return;
 
@@ -34,34 +30,33 @@ const Header = ({
       top: offsetPosition,
       behavior: "smooth",
     });
-    return;
+
+    window.history.pushState(null, "", route);
   };
 
   return (
-    <header
-      id="page-header"
-      className={`${isTransparent ? "transparent" : ""}`}
-    >
-      {logo ? (
-        <div
+    <header id="page-header" role="banner">
+      {logo && (
+        <a
+          href="#intro-section"
           id="header-logo-container"
-          onClick={() => handleNavClick("#intro-section")}
+          aria-label="Back to home"
+          onClick={(e) => handleNavClick(e, "#intro-section")}
         >
           <Image
             src={urlFor(logo).url()}
             height={50}
             width={50}
-            alt={logo.alt ?? ""}
+            alt="Pratik Goswami Logo"
+            priority
           />
-        </div>
-      ) : (
-        <div></div>
+        </a>
       )}
       <div id="header-actions">
         <Nav handleNavClick={handleNavClick} />
       </div>
     </header>
   );
-};
+}
 
 export default Header;

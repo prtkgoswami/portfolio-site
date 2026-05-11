@@ -1,21 +1,18 @@
 import { WELCOME_STR } from "@common/const";
-import { ReactElement } from "react";
 import { Skill } from "@sanity/types";
+import { client as sanityClient } from "@sanity/lib/client";
+import { SKILLS_QUERY } from "@/sanity/queries";
 import "./index.css";
 
 type AboutSectionProps = {
-  refCallback: any;
   aboutText: string;
-  skillList: Skill[];
 };
 
-const AboutSection = ({
-  refCallback,
-  aboutText,
-  skillList,
-}: AboutSectionProps): ReactElement => {
+async function AboutSection({ aboutText }: AboutSectionProps) {
+  const skillList: Skill[] = await sanityClient.fetch(SKILLS_QUERY);
+
   return (
-    <section id="about-section" className="pages" ref={refCallback}>
+    <section id="about-section" className="pages">
       <div className="section-content">
         <div id="welcome-wrapper">
           <h2 id="about-section-title">About Pratik</h2>
@@ -54,6 +51,6 @@ const AboutSection = ({
       </div>
     </section>
   );
-};
+}
 
 export default AboutSection;

@@ -9,7 +9,8 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(var(--foreground-rgb), 0.2);
-  background-color: rgb(var(--background-rgb));
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
   z-index: 100;
   transition: color 0.2s ease-out;
 }
